@@ -13,16 +13,15 @@ import { useCartStore } from "@/app/src/store/cart";
 export default function Navbar() {
   const [openMenu, setOpenMenu] = useState(false);
   const [hamburgerOpened, setHamburgerOpened] = useState(false);
-  const [openCart, setCartOpen] = useState(false);
   const scrollY = useScrollPosition();
-  const cart = useCartStore((state) => state.cart);
+  const { cart, setShowCart } = useCartStore((state) => state);
 
   const cartLength = cart
     .map((item) => item.quantity)
     .reduce((a, b) => a + b, 0);
 
   const handleCart = () => {
-    setCartOpen(!openCart);
+    setShowCart(false);
   };
 
   const handleHamburger = () => {
@@ -81,21 +80,6 @@ export default function Navbar() {
               <Link href="/" className="text-white text-2xl">
                 <FaUserCircle className="group-hover:text-yellow-400" />
               </Link>
-              <AnimatePresence>
-                {openMenu && (
-                  <motion.div
-                    initial={{ opacity: 0, y: -5 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -5 }}
-                    className="absolute mt-2 left-0 bg-white shadow-lg rounded-md p-4 text-black"
-                  >
-                    {/* Replace with your DropDown component content */}
-                    <p className="text-sm">Profile</p>
-                    <p className="text-sm">Settings</p>
-                    <p className="text-sm">Logout</p>
-                  </motion.div>
-                )}
-              </AnimatePresence>
             </div>
 
             {/* Cart */}
@@ -133,7 +117,7 @@ export default function Navbar() {
           )}
         </AnimatePresence>
       </div>
-      <Cart openCart={openCart} handleCart={handleCart} />
+      <Cart handleCart={handleCart} />
     </>
   );
 }

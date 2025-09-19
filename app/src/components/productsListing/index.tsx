@@ -17,7 +17,7 @@ export const ProductsListing = ({ heading, data }: ProductsProps) => {
     <div className="bg-black w-full flex items-center justify-center px-4 lg:px-10">
       <div className="relative max-w-6xl w-full">
         {/* Heading */}
-        <h1 className="text-2xl md:text-3xl text-center text-yellow-400 mb-10 lg:mb-12 uppercase font-medium">
+        <h1 className="text-2xl md:text-3xl text-center text-white mb-10 lg:mb-12 uppercase font-medium">
           {heading}
         </h1>
 
