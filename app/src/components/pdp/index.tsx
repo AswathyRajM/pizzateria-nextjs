@@ -12,8 +12,8 @@ import { useToastStore } from "../../store/toast";
 export default function PDP() {
   const { id } = useParams(); // fetch product ID from URL
   const product = ProductsData.find((p) => p.id.toString() === id);
-  const addToCart = useCartStore((state) => state.addToCart);
- const showToast = useToastStore((state) => state.showToast);
+  const { addToCart, setShowCart } = useCartStore((state) => state);
+  const showToast = useToastStore((state) => state.showToast);
 
   if (!product) {
     return <div className="text-center py-20">Product not found.</div>;
@@ -43,16 +43,16 @@ export default function PDP() {
 
   // Handle Add to Cart
   const handleAddToCart = () => {
-    const chosenAddons = product.addons.filter((a) =>
-      selectedAddons.includes(a.id)
-    );
+    const chosenAddons = product.addons
+      .filter((a) => selectedAddons.includes(a.id))
+      .map((a) => a.id);
 
     addToCart({
       id: product.id,
       quantity,
       addons: chosenAddons,
     });
-
+    setShowCart(true);
     showToast("Added to cart!", "success");
   };
 

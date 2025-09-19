@@ -1,6 +1,6 @@
 export const ProductsData = [
   {
-    id: 1,
+    id: "1",
     img: "https://ik.imagekit.io/aswathy/images/pizza1_Hek6UFiPN?updatedAt=1758276411591",
     alt: "pizza1",
     name: "Hawaiian",
@@ -15,7 +15,7 @@ export const ProductsData = [
     ],
   },
   {
-    id: 2,
+    id: "2",
     img: "https://ik.imagekit.io/aswathy/images/pizza1_Hek6UFiPN?updatedAt=1758276411591",
     alt: "pizza2",
     name: "Pepperoni Feast",
@@ -30,7 +30,7 @@ export const ProductsData = [
     ],
   },
   {
-    id: 3,
+    id: "3",
     img: "https://ik.imagekit.io/aswathy/images/pizza1_Hek6UFiPN?updatedAt=1758276411591",
     alt: "pizza3",
     name: "Veggie Supreme",
@@ -45,7 +45,7 @@ export const ProductsData = [
     ],
   },
   {
-    id: 4,
+    id: "4",
     img: "https://ik.imagekit.io/aswathy/images/pizza1_Hek6UFiPN?updatedAt=1758276411591",
     alt: "pizza4",
     name: "BBQ Chicken",
@@ -60,7 +60,7 @@ export const ProductsData = [
     ],
   },
   {
-    id: 5,
+    id: "5",
     img: "https://ik.imagekit.io/aswathy/images/pizza1_Hek6UFiPN?updatedAt=1758276411591",
     alt: "pizza5",
     name: "Four Cheese",
@@ -75,7 +75,7 @@ export const ProductsData = [
     ],
   },
   {
-    id: 6,
+    id: "6",
     img: "https://ik.imagekit.io/aswathy/images/pizza1_Hek6UFiPN?updatedAt=1758276411591",
     alt: "pizza6",
     name: "Spicy Veg Delight",

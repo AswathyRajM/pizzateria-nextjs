@@ -1,11 +1,11 @@
 export interface Addon {
   id: string;
-  name: string;
-  price: number;
+  name?: string;
+  price?: number;
 }
 
 export interface Product {
-  id: number;
+  id: string;
   img: string;
   alt: string;
   name: string;
@@ -17,7 +17,7 @@ export interface Product {
 }
 
 export interface CartItem {
-  id: number;
+  id: string;
   quantity: number;
-  addons?: Addon[];
+  addons?: string[];
 }
