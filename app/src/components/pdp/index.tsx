@@ -81,7 +81,7 @@ export default function PDP() {
             <span className="line-through text-gray-400">
               {product.originalPrice}
             </span>
-            <span className="border border-red-500 text-red-500 px-2 py-1 text-xs rounded">
+            <span className="bg-red-500 text-white px-2 py-1 text-xs">
               {product.offer}
             </span>
           </div>
