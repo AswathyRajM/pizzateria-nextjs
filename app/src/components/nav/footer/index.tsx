@@ -22,11 +22,11 @@ const FooterComponent = () => {
           >
             <Link
               href="/"
-              className="text-white text-2xl font-semibold flex items-center mb-4"
+              className="text-white/90 text-2xl font-semibold flex items-center mb-4"
             >
               Pizzateria
             </Link>
-            <div className="text-white/80">
+            <div>
               Lorem ipsum, dolor sit amet consectetur adipisicing elit. Pariatur
               minima repudiandae provident ex, officia debitis!
             </div>
@@ -39,8 +39,10 @@ const FooterComponent = () => {
             transition={{ duration: 0.7 }}
             className="max-w-[25rem] col-span-2 max-[400px]:col-span-2"
           >
-            <h4 className="pb-4 font-semibold text-lg">Who we are?</h4>
-            <p className="text-white/80 leading-7">
+            <h4 className="pb-4 font-semibold text-lg text-white/90">
+              Who we are?
+            </h4>
+            <p className="leading-7">
               The first Pizzateria Restaurant in Kerala opened in Alappey over
               30 years ago to a pizza craving state and now, there are over 20
               restaurants up and down the state, serving millions of guests!
@@ -54,13 +56,15 @@ const FooterComponent = () => {
             transition={{ duration: 0.8 }}
             className="space-y-2"
           >
-            <h4 className="pb-4 font-semibold text-lg">Company</h4>
+            <h4 className="pb-4 font-semibold text-lg text-white/90">
+              Company
+            </h4>
             <nav className="flex flex-col">
               {FOOTER_NAVLINKS.map((item) => (
                 <Link
                   key={item.href}
                   href={item.href}
-                  className="relative text-white/80 pb-2 w-fit hover:text-white"
+                  className="relative pb-2 w-fit hover:text-white"
                 >
                   {item.label}
                 </Link>
@@ -75,13 +79,15 @@ const FooterComponent = () => {
             transition={{ duration: 0.9 }}
             className="space-y-2"
           >
-            <h4 className="pb-4 font-semibold text-lg">Connect with Us</h4>
+            <h4 className="pb-4 font-semibold text-lg text-white/90">
+              Connect with Us
+            </h4>
             <nav className="flex flex-col">
               {["Facebook", "Twitter", "Instagram", "Youtube"].map((item) => (
                 <Link
                   key={item}
                   href="/"
-                  className="relative text-white/80 pb-2 w-fit hover:text-white"
+                  className="relative pb-2 w-fit hover:text-white"
                 >
                   {item}
                 </Link>

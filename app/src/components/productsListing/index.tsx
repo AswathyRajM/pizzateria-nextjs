@@ -4,16 +4,8 @@
 import Image from "next/image";
 import { motion } from "framer-motion";
 import Button from "../shared/button";
-import { IoCart } from "react-icons/io5";
-import { MdAddBox } from "react-icons/md";
-import { AiOutlineMinusSquare, AiOutlinePlusSquare } from "react-icons/ai";
-
-interface Product {
-  name: string;
-  desc: string;
-  price: string;
-  img: string;
-}
+import Link from "next/link";
+import { Product } from "../../store/types";
 
 interface ProductsProps {
   heading: string;
@@ -23,7 +15,7 @@ interface ProductsProps {
 export const ProductsListing = ({ heading, data }: ProductsProps) => {
   return (
     <div className="bg-black w-full flex items-center justify-center px-4 lg:px-10">
-      <div className="relative max-w-6xl w-full text-white/90">
+      <div className="relative max-w-6xl w-full">
         {/* Heading */}
         <h1 className="text-2xl md:text-3xl text-center text-yellow-400 mb-10 lg:mb-12 uppercase font-medium">
           {heading}
@@ -37,34 +29,45 @@ export const ProductsListing = ({ heading, data }: ProductsProps) => {
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.2, duration: 0.5 }}
-              className="flex bg-neutral-900 shadow-md relative w-full h-48"
             >
-              <div className="absolute z-10 bg-red-500 text-xs p-1">
-                BUY 1 GET 1 FREE
-              </div>
-              {/* Product Image */}
-              <div className="relative w-1/2 h-full flex-shrink-0">
-                <Image
-                  src={product.img}
-                  alt={product.name}
-                  fill
-                  className="object-cover object-center"
-                />
-              </div>
+              <Link
+                className="flex bg-neutral-900 shadow-md relative w-full h-48"
+                href={`/product/${product.id}`}
+              >
+                <div className="absolute z-10 bg-red-500 text-xs p-1 capitalize">
+                  {product.offer}
+                </div>
+                {/* Product Image */}
+                <div className="relative w-1/2 h-full flex-shrink-0">
+                  <Image
+                    src={product.img}
+                    alt={product.name}
+                    fill
+                    className="object-cover object-center"
+                  />
+                </div>
 
-              {/* Product Info */}
-              <div className="flex flex-col justify-start items-start p-4 pb-0 w-1/2 relative">
-                <h2 className="font-medium text-lg mb-1 cursor-pointer">
-                  {product.name}
-                </h2>
-                <p className="text-sm mb-3 line-clamp-4">{product.desc}</p>
+                {/* Product Info */}
+                <div className="flex flex-col justify-start items-start p-4 pb-0 w-1/2 relative">
+                  <h2 className="font-bold text-lg mb-1 cursor-pointer line-clamp-1">
+                    {product.name}
+                  </h2>
+                  <p className="text-sm mb-3 line-clamp-4">{product.desc}</p>
 
-                {/* Footer */}
-                <p className="text-md">{product.price}</p>
-                <Button inverted className="w-full mt-auto">
-                  View More
-                </Button>
-              </div>
+                  {/* Footer */}
+                  <p className=" mb-1 flex gap-2 items-center">
+                    <span className="text-md text-red-500 font-bold">
+                      {product.price}
+                    </span>
+                    <span className="ml-2 text-xs line-through text-gray-400">
+                      {product.originalPrice}
+                    </span>
+                  </p>
+                  <Button inverted className="w-full mt-auto text-xs">
+                    View More
+                  </Button>
+                </div>
+              </Link>
             </motion.div>
           ))}
         </div>

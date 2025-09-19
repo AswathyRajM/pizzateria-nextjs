@@ -8,12 +8,18 @@ import { motion, AnimatePresence } from "framer-motion";
 import Cart from "../../cart";
 import useScrollPosition from "@/app/src/hooks/useScrollPosition";
 import { NAVLINKS } from "@/app/src/helpers/constants";
+import { useCartStore } from "@/app/src/store/cart";
 
 export default function Navbar() {
   const [openMenu, setOpenMenu] = useState(false);
   const [hamburgerOpened, setHamburgerOpened] = useState(false);
   const [openCart, setCartOpen] = useState(false);
   const scrollY = useScrollPosition();
+  const cart = useCartStore((state) => state.cart);
+
+  const cartLength = cart
+    .map((item) => item.quantity)
+    .reduce((a, b) => a + b, 0);
 
   const handleCart = () => {
     setCartOpen(!openCart);
@@ -45,7 +51,7 @@ export default function Navbar() {
               {/* Logo */}
               <Link
                 href="/"
-                className="text-2xl text-white font-bold tracking-wide z-50 cursor-pointer"
+                className="text-2xl text-white/90 font-bold tracking-wide z-50 cursor-pointer"
               >
                 Pizzateria
               </Link>
@@ -57,7 +63,7 @@ export default function Navbar() {
                 <Link
                   key={link.href}
                   href={link.href}
-                  className="relative text-white capitalize group"
+                  className="relative text-white/90 capitalize group"
                 >
                   {link.label}
                   <span className="absolute left-0 -bottom-1 w-0 h-[2px] bg-yellow-400 transition-all duration-300 group-hover:w-full"></span>
@@ -99,7 +105,7 @@ export default function Navbar() {
             >
               <FaPizzaSlice className="group-hover:text-yellow-400" />
               <span className="absolute -top-1 -right-2 bg-yellow-400 text-black text-xs rounded-full w-4 h-4 flex items-center justify-center">
-                4
+                {cartLength}
               </span>
             </button>
           </div>
