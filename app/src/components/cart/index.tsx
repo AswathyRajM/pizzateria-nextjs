@@ -40,7 +40,7 @@ export default function Cart({ openCart, handleCart }: CartProps) {
             animate={{ x: 0 }}
             exit={{ x: "100%" }}
             transition={{ duration: 0.3, ease: "easeInOut" }}
-            className={`text-white/80 bg-neutral-900 shadow-md fixed top-0 right-0 z-[999] w-[350px] h-full  md:w-[350px] sm:w-[80vw] ${
+            className={`bg-neutral-900 shadow-md fixed top-0 right-0 z-[999] w-[350px] h-full  md:w-[350px] sm:w-[80vw] ${
               cart.length >= 4 ? "grid grid-rows-[auto_1fr_auto]" : ""
             }`}
           >
@@ -79,7 +79,8 @@ export default function Cart({ openCart, handleCart }: CartProps) {
                   const totalPrice = (basePrice + addonsTotal) * item.quantity;
 
                   return (
-                    <div
+                    <Link
+                      href={`/product/${item.id}`}
                       key={item.id}
                       className="flex gap-2 border-b border-gray-800 pb-4"
                     >
@@ -140,7 +141,7 @@ export default function Cart({ openCart, handleCart }: CartProps) {
                           </span>
                         </div>
                       </div>
-                    </div>
+                    </Link>
                   );
                 })
               )}
