@@ -1,7 +1,7 @@
 export const ProductsData = [
   {
     id: 1,
-    img: "/images/hawaiian.jpg",
+    img: "https://ik.imagekit.io/aswathy/images/pizza1_Hek6UFiPN?updatedAt=1758276411591",
     alt: "pizza2",
     name: "Hawaiian ",
     desc: "Pizza sauce, mozzarella, ham, pineapple lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quod. lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quod.",
@@ -9,7 +9,7 @@ export const ProductsData = [
   },
   {
     id: 2,
-    img: "/images/hawaiian.jpg",
+    img: "https://ik.imagekit.io/aswathy/images/pizza1_Hek6UFiPN?updatedAt=1758276411591",
     alt: "pizza2",
     name: "Hawaiian ",
     desc: "Pizza sauce, mozzarella, ham, pineapple",
@@ -17,7 +17,7 @@ export const ProductsData = [
   },
   {
     id: 3,
-    img: "/images/hawaiian.jpg",
+    img: "https://ik.imagekit.io/aswathy/images/pizza1_Hek6UFiPN?updatedAt=1758276411591",
     alt: "pizza2",
     name: "Hawaiian ",
     desc: "Pizza sauce, mozzarella, ham, pineapple",
@@ -25,7 +25,7 @@ export const ProductsData = [
   },
   {
     id: 4,
-    img: "/images/hawaiian.jpg",
+    img: "https://ik.imagekit.io/aswathy/images/pizza1_Hek6UFiPN?updatedAt=1758276411591",
     alt: "pizza2",
     name: "Hawaiian ",
     desc: "Pizza sauce, mozzarella, ham, pineapple",
@@ -33,7 +33,7 @@ export const ProductsData = [
   },
   {
     id: 5,
-    img: "/images/hawaiian.jpg",
+    img: "https://ik.imagekit.io/aswathy/images/pizza1_Hek6UFiPN?updatedAt=1758276411591",
     alt: "pizza2",
     name: "Hawaiian ",
     desc: "Pizza sauce, mozzarella, ham, pineapple",
@@ -41,7 +41,7 @@ export const ProductsData = [
   },
   {
     id: 5,
-    img: "/images/hawaiian.jpg",
+    img: "https://ik.imagekit.io/aswathy/images/pizza1_Hek6UFiPN?updatedAt=1758276411591",
     alt: "pizza2",
     name: "Hawaiian ",
     desc: "Pizza sauce, mozzarella, ham, pineapple",

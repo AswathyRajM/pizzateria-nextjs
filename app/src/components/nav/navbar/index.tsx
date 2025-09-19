@@ -1,12 +1,13 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Link from "next/link";
 import { FaPizzaSlice, FaUserCircle } from "react-icons/fa";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { motion, AnimatePresence } from "framer-motion";
 import Cart from "../../cart";
 import useScrollPosition from "@/app/src/hooks/useScrollPosition";
+import { NAVLINKS } from "@/app/src/helpers/constants";
 
 export default function Navbar() {
   const [openMenu, setOpenMenu] = useState(false);
@@ -22,13 +23,6 @@ export default function Navbar() {
     setHamburgerOpened((prev) => !prev);
   };
 
-  const navLinks = [
-    "Deals & Offers",
-    "Pizzas",
-    "Meals & Combos",
-    "Beverages & Desserts",
-  ];
-
   return (
     <>
       <div
@@ -40,7 +34,7 @@ export default function Navbar() {
             : "bg-gradient-to-b from-black via-black/20 to-transparent"
         }`}
       >
-        <nav className="flex items-center justify-between gap-10 max-w-[1300px] mx-auto px-4 lg:px-0 py-4">
+        <nav className="flex items-center justify-between gap-10 max-w-6xl mx-auto px-4 lg:px-0 py-4">
           <div className="flex items-center gap-10">
             {/* Hamburger Menu */}
             <div className="flex items-center gap-6">
@@ -59,13 +53,13 @@ export default function Navbar() {
 
             {/* Desktop Nav */}
             <div className="hidden lg:flex items-center gap-6 font-medium">
-              {navLinks.map((link) => (
+              {NAVLINKS.map((link) => (
                 <Link
-                  key={link}
-                  href="/"
+                  key={link.href}
+                  href={link.href}
                   className="relative text-white capitalize group"
                 >
-                  {link}
+                  {link.label}
                   <span className="absolute left-0 -bottom-1 w-0 h-[2px] bg-yellow-400 transition-all duration-300 group-hover:w-full"></span>
                 </Link>
               ))}
@@ -120,13 +114,13 @@ export default function Navbar() {
               exit={{ opacity: 0, y: -20 }}
               className="lg:hidden absolute top-16 left-0 w-full bg-red-600 text-white flex flex-col items-center gap-4 py-6 z-40"
             >
-              {navLinks.map((link) => (
+              {NAVLINKS.map((link) => (
                 <Link
-                  key={link}
-                  href="/"
+                  key={link.href}
+                  href={link.href}
                   className="text-lg capitalize hover:text-yellow-400 transition"
                 >
-                  {link}
+                  {link.label}
                 </Link>
               ))}
             </motion.div>

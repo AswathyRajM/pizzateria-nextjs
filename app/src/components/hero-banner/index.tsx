@@ -1,8 +1,9 @@
 "use client";
 
 import Image from "next/image";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import Button from "../shared/button";
+import { AnimatePresence, motion } from "framer-motion";
 
 const banners = [
   {
@@ -55,7 +56,9 @@ export default function HeroCarousel() {
       aria-label="Promotional carousel"
     >
       <div
-        className={`flex h-full ${transitioning ? "transition-transform duration-300 ease-in-out" : ""}`}
+        className={`flex h-full ${
+          transitioning ? "transition-transform duration-300 ease-in-out" : ""
+        }`}
         style={{ transform: `translateX(-${current * 100}%)` }}
       >
         {infiniteFrames.map((banner, index) => (
@@ -73,17 +76,25 @@ export default function HeroCarousel() {
               priority={index === 1} // first real slide
             />
             <div className="absolute inset-0 bg-gradient-to-r from-black/70 to-black/10" />
-            <div className="relative flex h-full max-w-[1200px] mx-auto items-center w-full px-4 mt-5">
-              <div className="flex flex-col items-start text-white uppercase font-bold max-w-fit">
-                <h1 className="text-4xl md:text-5xl lg:text-6xl tracking-wider shadow-[3px_5px_0_#e9ba23]">
-                  {banner.title}
-                </h1>
-                <p className="mt-4 mb-6 text-xl md:text-[22px] lg:text-2xl">
-                  {banner.subtitle}
-                </p>
-                <Button className="px-8 py-3 text-lg">Place Order</Button>
-              </div>
-            </div>
+            <AnimatePresence>
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: index * 0.2, duration: 0.5 }}
+                className="relative flex h-full max-w-6xl mx-auto items-center w-full px-4 mt-5"
+              >
+                <div className="flex flex-col items-start text-white uppercase font-bold max-w-fit">
+                  <h1 className="text-4xl md:text-5xl lg:text-6xl tracking-wider shadow-[3px_5px_0_#e9ba23]">
+                    {banner.title}
+                  </h1>
+                  <p className="mt-4 mb-6 text-xl md:text-[22px] lg:text-2xl">
+                    {banner.subtitle}
+                  </p>
+                  <Button className="px-8 py-3 text-lg">Place Order</Button>
+                </div>
+              </motion.div>
+            </AnimatePresence>
           </div>
         ))}
       </div>

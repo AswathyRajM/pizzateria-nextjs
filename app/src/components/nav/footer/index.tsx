@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { motion } from "framer-motion";
+import { FOOTER_NAVLINKS } from "@/app/src/helpers/constants";
 
 const FooterComponent = () => {
   const Copyright =
@@ -9,7 +10,7 @@ const FooterComponent = () => {
 
   return (
     <footer className="bg-black w-full flex flex-col items-center justify-center text-sm">
-      <div className="flex flex-col items-center justify-between text-white w-full max-w-[1300px]">
+      <div className="flex flex-col items-center justify-between text-white w-full max-w-6xl">
         {/* Container */}
         <div className=" items-start justify-between w-full py-10 px-4 lg:px-0 gap-8 grid grid-cols-1 gap-y-6 max-[400px] md:grid-cols-5">
           {/* Logo */}
@@ -25,7 +26,10 @@ const FooterComponent = () => {
             >
               Pizzateria
             </Link>
-            <div className="text-white/80">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Pariatur minima repudiandae provident ex, officia debitis!</div>
+            <div className="text-white/80">
+              Lorem ipsum, dolor sit amet consectetur adipisicing elit. Pariatur
+              minima repudiandae provident ex, officia debitis!
+            </div>
           </motion.div>
 
           {/* About */}
@@ -52,17 +56,15 @@ const FooterComponent = () => {
           >
             <h4 className="pb-4 font-semibold text-lg">Company</h4>
             <nav className="flex flex-col">
-              {["Our Journey", "Contact Us", "Privacy Policy", "Careers"].map(
-                (item) => (
-                  <Link
-                    key={item}
-                    href="/"
-                    className="relative text-white/80 pb-2 w-fit hover:text-white"
-                  >
-                    {item}
-                  </Link>
-                )
-              )}
+              {FOOTER_NAVLINKS.map((item) => (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className="relative text-white/80 pb-2 w-fit hover:text-white"
+                >
+                  {item.label}
+                </Link>
+              ))}
             </nav>
           </motion.div>
 
@@ -87,12 +89,11 @@ const FooterComponent = () => {
             </nav>
           </motion.div>
         </div>
-
       </div>
-        {/* Copyright */}
-        <div className="bg-yellow-500 text-black w-full text-center py-4">
-          {Copyright}
-        </div>
+      {/* Copyright */}
+      <div className="bg-yellow-500 text-black w-full text-center py-4">
+        {Copyright}
+      </div>
     </footer>
   );
 };

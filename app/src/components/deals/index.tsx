@@ -2,6 +2,8 @@
 
 import React from "react";
 import Image from "next/image";
+import { AnimatePresence, motion } from "framer-motion";
+import Button from "../shared/button";
 
 interface DealRowProps {
   image: string;
@@ -11,7 +13,13 @@ interface DealRowProps {
   reverse?: boolean; // to alternate image position
 }
 
-function DealRow({ image, title, description, buttonText, reverse }: DealRowProps) {
+function DealRow({
+  image,
+  title,
+  description,
+  buttonText,
+  reverse,
+}: DealRowProps) {
   return (
     <div
       className={`flex flex-col md:flex-row items-center bg-neutral-900 shadow-md ${
@@ -27,14 +35,13 @@ function DealRow({ image, title, description, buttonText, reverse }: DealRowProp
       <div className="w-full md:w-1/2 text-center md:text-left p-4">
         <h2 className="text-3xl md:text-4xl font-bold">{title}</h2>
         <p className="mt-4 text-lg text-white/80">{description}</p>
-        <button className="mt-6 px-6 py-3 text-lg font-medium bg-yellow-400 text-black rounded-lg shadow-md transition duration-200 hover:bg-red-600 hover:text-white">
+        <Button inverted className="mt-6 px-6 py-3 text-lg font-medium">
           {buttonText}
-        </button>
+        </Button>
       </div>
     </div>
   );
 }
-
 
 interface DealsProps {
   items: DealRowProps[];
@@ -42,10 +49,21 @@ interface DealsProps {
 
 export default function Deals({ items }: DealsProps) {
   return (
-   <section className="px-5 lg:px-10 grid grid-cols-1 gap-6 md:grid-cols-2 bg-black">
-      {items.map((deal, index) => (
-        <DealRow key={index} {...deal} reverse={index % 2 !== 0} />
-      ))}
+    <section className="px-5 lg:px-10 bg-black">
+      <AnimatePresence>
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-2 max-w-6xl mx-auto md:gap-10">
+          {items.map((deal, index) => (
+            <motion.div
+              key={index}
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: index * 0.2, duration: 0.5 }}
+            >
+              <DealRow {...deal} reverse={index % 2 !== 0} />
+            </motion.div>
+          ))}
+        </div>
+      </AnimatePresence>
     </section>
   );
 }
