@@ -66,19 +66,16 @@ export default function Navbar() {
                   className="relative text-white/90 capitalize group"
                 >
                   {link.label}
-                  <span className="absolute left-0 -bottom-1 w-0 h-[2px] bg-yellow-400 transition-all duration-300 group-hover:w-full"></span>
+                  <span className="absolute left-0 -bottom-1 w-0 h-[2px] bg-yellow-500 transition-all duration-300 group-hover:w-full"></span>
                 </Link>
               ))}
             </div>
           </div>
           <div className="flex items-center gap-10">
             {/* User Dropdown */}
-            <div
-              className="relative group"
-             
-            >
+            <div className="relative group">
               <Link href="/" className="text-white text-2xl">
-                <FaUserCircle className="group-hover:text-yellow-400" />
+                <FaUserCircle className="group-hover:text-yellow-500" />
               </Link>
             </div>
 
@@ -87,8 +84,8 @@ export default function Navbar() {
               onClick={handleCart}
               className="relative text-white text-2xl flex items-center cursor-pointer group"
             >
-              <FaPizzaSlice className="group-hover:text-yellow-400" />
-              <span className="absolute -top-1 -right-2 bg-yellow-400 text-black text-xs rounded-full w-4 h-4 flex items-center justify-center">
+              <FaPizzaSlice className="group-hover:text-yellow-500" />
+              <span className="absolute -top-1 -right-2 bg-yellow-500 text-black text-xs rounded-full w-4 h-4 flex items-center justify-center">
                 {cartLength}
               </span>
             </button>
@@ -108,7 +105,7 @@ export default function Navbar() {
                 <Link
                   key={link.href}
                   href={link.href}
-                  className="text-lg capitalize hover:text-yellow-400 transition"
+                  className="text-lg capitalize hover:text-yellow-500 transition"
                 >
                   {link.label}
                 </Link>

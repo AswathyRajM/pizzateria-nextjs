@@ -3,16 +3,15 @@
 import { useState, useMemo } from "react";
 import { useParams } from "next/navigation";
 import Image from "next/image";
-import { ProductsData } from "@/components/productsListing/data";
 import Button from "../shared/button";
 import QuantityButton from "../shared/quantity-button";
 import { useCartStore } from "../../store/cart";
 import { useToastStore } from "../../store/toast";
 import { motion, AnimatePresence } from "framer-motion";
+import { Addon, Product } from "@/store/types";
 
-export default function PDP() {
+export default function PDP({ product }: { product: Product }) {
   const { productId } = useParams(); // fetch product ID from URL
-  const product = ProductsData.find((product) => product.productId.toString() === productId);
   const { addToCart, setShowCart } = useCartStore((state) => state);
   const showToast = useToastStore((state) => state.showToast);
 
@@ -23,34 +22,32 @@ export default function PDP() {
   const [quantity, setQuantity] = useState(1);
   const [selectedAddons, setSelectedAddons] = useState<string[]>([]);
 
-  const toggleAddon = (addonId: string) => {
+  const toggleAddon = (addon_id: string) => {
     setSelectedAddons((prev) =>
-      prev.includes(addonId)
-        ? prev.filter((a) => a !== addonId)
-        : [...prev, addonId]
+      prev.includes(addon_id)
+        ? prev.filter((a) => a !== addon_id)
+        : [...prev, addon_id]
     );
   };
 
-  const basePrice = parseFloat(product.price.replace("$", ""));
-
-  // Calculate total
   const total = useMemo(() => {
-    const addonsTotal = product.addons
-      .filter((addon) => selectedAddons.includes(addon.addonId))
-      .reduce((sum, addon) => sum + addon.price, 0);
-    return (basePrice + addonsTotal) * quantity;
-  }, [basePrice, selectedAddons, quantity, product.addons]);
+    const addonsTotal =
+      product.addons
+        ?.filter((addon: Addon) => selectedAddons.includes(addon.addon_id))
+        .reduce((sum: number, addon: Addon) => sum + addon.price, 0) || 0; // default to 0
+
+    return (product.price + addonsTotal) * quantity;
+  }, [product.price, product.addons, selectedAddons, quantity]);
 
   const handleAddToCart = () => {
-    const chosenAddons = product.addons
-      .filter((addon) => selectedAddons.includes(addon.addonId))
-   
+    const chosenAddons = product.addons?.filter((addon) =>
+      selectedAddons.includes(addon.addon_id)
+    );
 
     addToCart({
-      productId: product.productId,
+      product_id: product.product_id,
       quantity,
       addons: chosenAddons,
-    
     });
     setShowCart(true);
     showToast("Added to cart!", "success");
@@ -67,7 +64,7 @@ export default function PDP() {
           className="relative w-full h-96 md:h-[500px] rounded-2xl overflow-hidden shadow-lg"
         >
           <Image
-            src={product.img}
+            src={product.image_url}
             alt={product.name}
             fill
             className="object-cover"
@@ -91,14 +88,14 @@ export default function PDP() {
                   {product.price}
                 </span>
                 <span className="line-through text-gray-400">
-                  {product.originalPrice}
+                  {product.original_price}
                 </span>
                 <span className="bg-red-500 text-white px-2 py-1 text-xs">
                   {product.offer}
                 </span>
               </div>
 
-              <p className="mt-4">{product.desc}</p>
+              <p className="mt-4">{product.description}</p>
 
               {/* Quantity Selector */}
               <div className="mt-6 flex items-center gap-4">
@@ -120,16 +117,16 @@ export default function PDP() {
               <div className="mt-6 text-sm">
                 <h3 className="text-base">Add-ons:</h3>
                 <div className="flex flex-col mt-2">
-                  {product.addons.map((addon) => (
+                  {product.addons?.map((addon) => (
                     <label
-                      key={addon.addonId}
+                      key={addon.addon_id}
                       className="flex items-center justify-between border-b px-1 py-2 border-b-gray-800 cursor-pointer hover:bg-gray-900"
                     >
                       <div className="flex items-center gap-2">
                         <input
                           type="checkbox"
-                          checked={selectedAddons.includes(addon.addonId)}
-                          onChange={() => toggleAddon(addon.addonId)}
+                          checked={selectedAddons.includes(addon.addon_id)}
+                          onChange={() => toggleAddon(addon.addon_id)}
                           className="h-4 w-4"
                         />
                         <span>{addon.name}</span>

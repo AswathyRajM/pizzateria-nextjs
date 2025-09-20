@@ -105,7 +105,7 @@ export default function HeroCarousel() {
           <button
             key={idx}
             className={`w-3 h-3 rounded-full cursor-pointer ${
-              idx + 1 === current ? "bg-yellow-400" : "bg-white/50"
+              idx + 1 === current ? "bg-yellow-500" : "bg-white/50"
             }`}
             onClick={() => setCurrent(idx + 1)}
           />

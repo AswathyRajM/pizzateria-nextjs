@@ -49,7 +49,7 @@ interface DealsProps {
 
 export default function Deals({ items }: DealsProps) {
   return (
-    <section className="px-5 lg:px-10 bg-black">
+    <section className="px-5 lg:px-10">
       <AnimatePresence>
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2 max-w-6xl mx-auto md:gap-10">
           {items.map((deal, index) => (

@@ -6,7 +6,7 @@ interface CartState {
   shouldShowCart: boolean;
   setShowCart: (value: boolean) => void;
   addToCart: (item: CartItem) => void;
-  removeFromCart: (productId: string) => void;
+  removeFromCart: (product_id: string) => void;
   clearCart: () => void;
   getCart: () => CartItem[];
 }
@@ -19,12 +19,12 @@ export const useCartStore = create<CartState>((set, get) => ({
 
   addToCart: (item) =>
     set((state) => {
-      const existing = state.cart.find((product) => product.productId === item.productId);
+      const existing = state.cart.find((product) => product.product_id === item.product_id);
 
       if (existing) {
         return {
           cart: state.cart.map((product) =>
-            product.productId === item.productId    
+            product.product_id === item.product_id    
               ? { ...product, quantity: product.quantity + item.quantity }
               : product
           ),
@@ -34,9 +34,9 @@ export const useCartStore = create<CartState>((set, get) => ({
       return { cart: [...state.cart, item] };
     }),
 
-  removeFromCart: (productId) =>
+  removeFromCart: (product_id) =>
     set((state) => ({
-      cart: state.cart.filter((product) => product.productId !== productId),
+      cart: state.cart.filter((product) => product.product_id !== product_id),
     })),
 
   clearCart: () => set({ cart: [] }),

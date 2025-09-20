@@ -1,14 +1,8 @@
 "use client";
 
 import { FaTimes } from "react-icons/fa";
-import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
-import Button from "./button";
 import { useCartStore } from "../../store/cart";
-import { ProductsData } from "../productsListing/data";
-import Image from "next/image";
-import { VscClose } from "react-icons/vsc";
-import { useToastStore } from "../../store/toast";
 
 type PopupProps = {
   openPopup: boolean;

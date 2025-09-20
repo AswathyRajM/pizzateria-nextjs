@@ -1,13 +1,16 @@
 "use client";
 
+import HeadingBanner from "@/components/heading-banner";
 import Image from "next/image";
-import HeadingBanner from "../../components/heading-banner";
 
 export default function Journey() {
   return (
     <main className="bg-white text-gray-800">
       {/* Hero Section */}
-      <HeadingBanner heading='Our Journey' imgUrl='https://ik.imagekit.io/aswathy/images/featured_Q2wsv02eL.jpg?updatedAt=1651588578882' />
+      <HeadingBanner
+        heading="Our Journey"
+        imgUrl="https://ik.imagekit.io/aswathy/images/featured_Q2wsv02eL.jpg?updatedAt=1651588578882"
+      />
 
       {/* Journey Story */}
       <section className="max-w-6xl mx-auto px-6 py-16 grid md:grid-cols-2 gap-12 items-center">
@@ -61,13 +64,13 @@ export default function Journey() {
       </section>
 
       {/* CTA */}
-      <section className="text-center py-16 bg-black text-white">
+      <section className="text-center py-16 text-white">
         <h2 className="text-4xl font-bold mb-4">Be Part of Our Journey</h2>
         <p className="text-lg text-gray-300 mb-6 max-w-2xl mx-auto">
           From the very first slice to the next big milestone, our story
           continues—and we’d love for you to be part of it.
         </p>
-        <button className="px-8 py-3 text-lg font-medium bg-yellow-400 text-black rounded-lg shadow-md transition duration-200 hover:bg-red-600 hover:text-white">
+        <button className="px-8 py-3 text-lg font-medium bg-yellow-500 text-black rounded-lg shadow-md transition duration-200 hover:bg-red-600 hover:text-white">
           Order Now
         </button>
       </section>

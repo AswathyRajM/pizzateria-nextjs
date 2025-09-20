@@ -1,24 +1,25 @@
 export interface Addon {
-  addonId: string;
+  addon_id: string;
   name: string;
   price: number;
 }
 
 export interface Product {
-  productId: string;
-  img: string;
-  alt: string;
+  product_id: string;
+  image_url: string;
   name: string;
-  desc: string;
-  originalPrice: string;
-  price: string;
-  offer: string;
-  addons: Addon[];
+  description: string;
+  original_price: number;
+  price: number;
+  offer: string | null;
+  addons?: Addon[]; // optional relation mapping
 }
 
 export interface CartItem {
-  cartId?: string;    
-  productId: string;
+  cart_item_id?: string;
+  cart_id?: string;
+  product_id: string;
   quantity: number;
-  addons?: Addon[];
+  addons?: Addon[] | null; // stored as jsonb in DB
+  created_at?: string;
 }
