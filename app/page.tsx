@@ -1,9 +1,9 @@
-import Deals from "./src/components/deals";
-import Featured from "./src/components/featured";
-import HeroBanner from "./src/components/hero-banner";
-import { ProductsListing } from "./src/components/productsListing";
-import { ProductsData } from "./src/components/productsListing/data";
-import { DEALITEMS } from "./src/helpers/constants";
+import Deals from "../components/deals";
+import Featured from "../components/featured";
+import HeroBanner from "../components/hero-banner";
+import { ProductsListing } from "../components/productsListing";
+import { ProductsData } from "../components/productsListing/data";
+import { DEALITEMS } from "../helpers/constants";
 
 export default function Home() {
   return (
