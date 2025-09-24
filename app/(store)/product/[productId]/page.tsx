@@ -13,7 +13,9 @@ export default async function ProductPage({ params }: ProductPageProps) {
   const { productId } = await params;
 
   const product = await fetchProductDetails(productId);
-  if (!productId || product?.error) return notFound();
+  if (!productId || product?.error) {
+    return notFound();
+  }
 
   return (
     <PageLayoutWrapper addMarginTop>

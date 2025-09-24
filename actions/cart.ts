@@ -54,23 +54,6 @@ export const createCart = async (userId: string) => {
   }
 };
 
-const updateCartCount = async (cartId: string) => {
-  try {
-    if (!cartId) return;
-    //  Update cart total_count using Postgres function
-    const { data: cart, error: updateCartError } = await supabase.rpc(
-      "update_cart_total_count",
-      {
-        cart_id: cartId,
-      }
-    );
-    if (updateCartError) throw updateCartError;
-  } catch (error) {
-    console.error("Add/update cart item error:", error);
-    return null;
-  }
-};
-
 export const addItemToCart = async (item: AddToCartType, cartId: string) => {
   try {
     if (!cartId) return;
@@ -86,17 +69,8 @@ export const addItemToCart = async (item: AddToCartType, cartId: string) => {
 
     if (insertItemError) throw insertItemError;
 
-    // 3️⃣ Update cart total_count using Postgres function
-    const { data: cart, error: updateCartError } = await supabase.rpc(
-      "update_cart_total_count",
-      {
-        cart_id: cartId,
-      }
-    );
-
-    if (updateCartError) throw updateCartError;
-
-    console.log({ data, cart });
+    console.log(data);
+    return data;
   } catch (error) {
     console.error("Add/update cart item error:", error);
     return null;

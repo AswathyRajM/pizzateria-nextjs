@@ -64,16 +64,15 @@ export default function PDP({ product }: { product: ProductType }) {
     setShowCart(true);
     showToast("Added to cart!", "success");
   };
-
   return (
     <AnimatePresence>
-      <main className="max-w-6xl mx-auto px-6 py-12 grid md:grid-cols-2 gap-12">
+      <main className="max-w-6xl px-6 py-12 mx-auto grid md:grid-cols-2 gap-12">
         {/* Left: Image */}
         <motion.aside
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1, duration: 0.5 }}
-          className="relative w-full h-96 md:h-[500px] rounded-2xl overflow-hidden shadow-lg"
+          className="relative  size-96 md:size-[500px]  rounded-2xl overflow-hidden shadow-lg"
         >
           <Image
             src={product.image_url}
@@ -126,28 +125,32 @@ export default function PDP({ product }: { product: ProductType }) {
               </div>
 
               {/* Add-ons */}
-              <div className="mt-6 text-sm">
-                <h3 className="text-base">Add-ons:</h3>
-                <div className="flex flex-col mt-2">
-                  {product.addons?.map((addon) => (
-                    <label
-                      key={addon.addon_id}
-                      className="flex items-center justify-between border-b px-1 py-2 border-b-gray-800 cursor-pointer hover:bg-gray-900"
-                    >
-                      <div className="flex items-center gap-2">
-                        <input
-                          type="checkbox"
-                          checked={selectedAddons.includes(addon.addon_id)}
-                          onChange={() => toggleAddon(addon.addon_id)}
-                          className="h-4 w-4"
-                        />
-                        <span>{addon.name}</span>
-                      </div>
-                      <span>+${addon.price.toFixed(2)}</span>
-                    </label>
-                  ))}
+              {product.addons?.length ? (
+                <div className="mt-6 text-sm">
+                  <h3 className="text-base">Add-ons:</h3>
+                  <div className="flex flex-col mt-2">
+                    {product.addons?.map((addon) => (
+                      <label
+                        key={addon.addon_id}
+                        className="flex items-center justify-between border-b px-1 py-2 border-b-gray-800 cursor-pointer hover:bg-gray-900"
+                      >
+                        <div className="flex items-center gap-2">
+                          <input
+                            type="checkbox"
+                            checked={selectedAddons.includes(addon.addon_id)}
+                            onChange={() => toggleAddon(addon.addon_id)}
+                            className="h-4 w-4"
+                          />
+                          <span>{addon.name}</span>
+                        </div>
+                        <span>+${addon.price.toFixed(2)}</span>
+                      </label>
+                    ))}
+                  </div>
                 </div>
-              </div>
+              ) : (
+                <></>
+              )}
 
               {/* Total */}
               <div className="mt-6 text-xl font-semibold">
