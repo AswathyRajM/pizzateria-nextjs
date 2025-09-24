@@ -1,8 +1,10 @@
 import { productAddonFormat } from "@/utils/product";
-import { supabase } from "@/utils/supabase/client";
+import { createClient } from "@/utils/supabase/server";
 
 export const fetchProductDetails = async (productId: string) => {
   try {
+    const supabase = await createClient();
+
     if (!productId) return;
     const { data: product, error } = await supabase
       .from("products")

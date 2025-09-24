@@ -1,48 +1,44 @@
-"use server";
-
-import { supabase } from "../utils/supabase/client";
+import { createClient } from "@/utils/supabase/client";
 
 export async function getUserSession() {
   try {
-    // get the existing session
+    const supabase = createClient();
+
     const {
       data: { session },
-      error: sessionError,
-    } = await supabase.auth.getSession();
+      error,
+    }: any = await supabase.auth.getSession();
 
-    if (sessionError) {
-      console.error("Session error:", sessionError);
-    }
+    if (error) console.error("Session error:", error);
 
-    let authData: any;
-
-    if (sessionError || !session) {
-      // If no session exists, sign in anonymously
-      const { data, error: anonError } =
-        await supabase.auth.signInAnonymously();
-
-      if (anonError) {
-        console.error("Anonymous auth error:", anonError);
-        return null;
+    if (session) {
+      // Check if expired
+      if (Date.now() / 1000 > session.expires_at) {
+        // Refresh session
+        const { data: refreshedData, error: refreshError } =
+          await supabase.auth.refreshSession();
+        if (refreshError) {
+          console.error("Refresh error:", refreshError);
+          return null;
+        }
+        return {
+          user: refreshedData.user,
+          session: refreshedData.session,
+          cart: {},
+        };
       }
-
-      authData = {
-        user: data.user,
-        session: data.session,
-        cart:null
-      };
-    } else {
-      // Session already exists
-      authData = {
-        user: session.user,
-        session: session,
-        cart: {}
-      };
+      return { user: session.user, session, cart: {} };
     }
 
-    return authData;
-  } catch (error) {
-    console.error("Unexpected error in auth endpoint:", error);
+    // No session, create anonymous session
+    const { data, error: anonError } = await supabase.auth.signInAnonymously();
+    if (anonError) {
+      console.error("Anonymous auth error:", anonError);
+      return null;
+    }
+    return { user: data.user, session: data.session, cart: null };
+  } catch (err) {
+    console.error("Unexpected auth error:", err);
     return null;
   }
 }

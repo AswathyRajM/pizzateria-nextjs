@@ -12,8 +12,9 @@ import { useCartStore } from "@/store/cartStore";
 import { useUserState } from "@/store/userStore";
 import { getCartIdAndCount } from "@/actions/cart";
 import { CartIdAndCountType } from "@/helpers/types";
+import { getUserSession } from "@/actions/auth";
 
-export default function Navbar({ userSession }: { userSession: any }) {
+export default function Navbar() {
   const [hamburgerOpened, setHamburgerOpened] = useState(false);
   const scrollY = useScrollPosition();
   const { shouldShowCart, cartCount, setShowCart, setCartCount } = useCartStore(
@@ -21,17 +22,21 @@ export default function Navbar({ userSession }: { userSession: any }) {
   );
   const { setAuth } = useUserState((state) => state);
 
-  const fetchCart = async (userId: string) => {
-    const cartCount: CartIdAndCountType = await getCartIdAndCount(userId);
-    setCartCount(cartCount);
+  const fetchCart = async () => {
+    const userSession = await getUserSession();
+
+    if (userSession?.user.id) {
+      setAuth(userSession);
+      const cartCount: CartIdAndCountType = await getCartIdAndCount(
+        userSession.user.id
+      );
+      setCartCount(cartCount);
+    }
   };
 
   useEffect(() => {
-    if (userSession) {
-      setAuth(userSession);
-      if (userSession?.user.id) fetchCart(userSession.user.id);
-    }
-  }, [userSession, setAuth]);
+    fetchCart();
+  }, []);
 
   const handleCart = () => {
     setShowCart(!shouldShowCart);
@@ -52,58 +57,59 @@ export default function Navbar({ userSession }: { userSession: any }) {
             : "bg-gradient-to-b from-black via-black/20 to-transparent"
         }`}
       >
-        <nav className="flex items-center justify-between gap-10 max-w-6xl mx-auto px-4 lg:px-0 py-4">
-          <div className="flex items-center gap-10">
-            {/* Hamburger Menu */}
-            <div className="flex items-center gap-6">
-              <GiHamburgerMenu
-                className="lg:hidden cursor-pointer"
-                onClick={handleHamburger}
-              />
-              {/* Logo */}
-              <Link
-                href="/"
-                className="text-2xl text-white/90 font-bold tracking-wide z-50 cursor-pointer"
-              >
-                Pizzateria
-              </Link>
-            </div>
-
-            {/* Desktop Nav */}
-            <div className="hidden lg:flex items-center gap-6 font-medium">
-              {NAVLINKS.map((link) => (
+        <nav className="w-full flex items-center justify-center px-4 lg:px-10 py-4">
+          <div className="relative max-w-6xl w-full flex items-center justify-between gap-10">
+            <div className="flex items-center gap-10">
+              {/* Hamburger Menu */}
+              <div className="flex items-center gap-6">
+                <GiHamburgerMenu
+                  className="lg:hidden cursor-pointer"
+                  onClick={handleHamburger}
+                />
+                {/* Logo */}
                 <Link
-                  key={link.href}
-                  href={link.href}
-                  className="relative text-white/90 capitalize group"
+                  href="/"
+                  className="text-2xl text-white/90 font-bold tracking-wide z-50 cursor-pointer"
                 >
-                  {link.label}
-                  <span className="absolute left-0 -bottom-1 w-0 h-[2px] bg-yellow-500 transition-all duration-300 group-hover:w-full"></span>
+                  Pizzateria
                 </Link>
-              ))}
-            </div>
-          </div>
-          <div className="flex items-center gap-10">
-            {/* User Dropdown */}
-            <div className="relative group">
-              <Link href="/" className="text-white text-2xl">
-                <FaUserCircle className="group-hover:text-yellow-500" />
-              </Link>
-            </div>
+              </div>
 
-            {/* Cart */}
-            <button
-              onClick={handleCart}
-              className="relative text-white text-2xl flex items-center cursor-pointer group"
-            >
-              <FaPizzaSlice className="group-hover:text-yellow-500" />
-              <span className="absolute -top-1 -right-2 bg-yellow-500 text-black text-xs rounded-full w-4 h-4 flex items-center justify-center">
-                {cartCount}
-              </span>
-            </button>
+              {/* Desktop Nav */}
+              <div className="hidden lg:flex items-center gap-6 font-medium">
+                {NAVLINKS.map((link) => (
+                  <Link
+                    key={link.href}
+                    href={link.href}
+                    className="relative text-white/90 capitalize group"
+                  >
+                    {link.label}
+                    <span className="absolute left-0 -bottom-1 w-0 h-[2px] bg-yellow-500 transition-all duration-300 group-hover:w-full"></span>
+                  </Link>
+                ))}
+              </div>
+            </div>
+            <div className="flex items-center gap-10">
+              {/* User Dropdown */}
+              <div className="relative group">
+                <Link href="/" className="text-white text-2xl">
+                  <FaUserCircle className="group-hover:text-yellow-500" />
+                </Link>
+              </div>
+
+              {/* Cart */}
+              <button
+                onClick={handleCart}
+                className="relative text-white text-2xl flex items-center cursor-pointer group"
+              >
+                <FaPizzaSlice className="group-hover:text-yellow-500" />
+                <span className="absolute -top-1 -right-2 bg-yellow-500 text-black text-xs rounded-full w-4 h-4 flex items-center justify-center">
+                  {cartCount}
+                </span>
+              </button>
+            </div>
           </div>
         </nav>
-
         {/* Mobile Menu */}
         <AnimatePresence>
           {hamburgerOpened && (

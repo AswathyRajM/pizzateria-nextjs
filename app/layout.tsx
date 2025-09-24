@@ -26,14 +26,12 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const userSession = await getUserSession();
-
   return (
     <html lang="en">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased relative !text-gray-300`}
       >
-        <Navbar userSession={userSession} />
+        <Navbar />
         {children}
         <FooterComponent />
         <Toast />

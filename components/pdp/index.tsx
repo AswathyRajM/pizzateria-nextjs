@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { useParams } from "next/navigation";
 import Image from "next/image";
 import Button from "../shared/button";
@@ -12,7 +12,13 @@ import { useCartStore } from "@/store/cartStore";
 import { addItemToCart, createCart } from "@/actions/cart";
 import { useUserState } from "@/store/userStore";
 
-export default function PDP({ product }: { product: ProductType }) {
+export default function PDP({
+  product,
+  addonIds,
+}: {
+  product: ProductType;
+  addonIds: string[];
+}) {
   const { cartId, increaseCartCount, setShowCart, setCartCount } = useCartStore(
     (state) => state
   );
@@ -24,7 +30,7 @@ export default function PDP({ product }: { product: ProductType }) {
   }
 
   const [quantity, setQuantity] = useState(1);
-  const [selectedAddons, setSelectedAddons] = useState<string[]>([]);
+  const [selectedAddons, setSelectedAddons] = useState<string[]>(addonIds);
 
   const toggleAddon = (addon_id: string) => {
     setSelectedAddons((prev) =>
@@ -33,6 +39,12 @@ export default function PDP({ product }: { product: ProductType }) {
         : [...prev, addon_id]
     );
   };
+
+  useEffect(() => {
+    return () => {
+      setSelectedAddons([]);
+    };
+  }, []);
 
   const total = useMemo(() => {
     const addonsTotal =

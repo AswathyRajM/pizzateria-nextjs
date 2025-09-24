@@ -3,7 +3,7 @@ import HeadingBanner from "@/components/heading-banner";
 import PageLayoutWrapper from "@/components/page-layout-wrapper";
 import { ProductsListing } from "@/components/products-listing";
 import { DEALITEMS } from "@/helpers/constants";
-import { supabase } from "@/utils/supabase/client";
+import { supabase } from "@/utils/supabase-old/client";
 import React from "react";
 
 async function PizzasPage() {

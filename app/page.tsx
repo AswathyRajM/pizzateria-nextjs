@@ -1,4 +1,4 @@
-import { supabase } from "@/utils/supabase/client";
+import { createClient } from "@/utils/supabase/server";
 import Deals from "../components/deals";
 import Featured from "../components/featured";
 import HeroBanner from "../components/hero-banner";
@@ -7,6 +7,7 @@ import { DEALITEMS } from "../helpers/constants";
 import { getUserSession } from "@/actions/auth";
 
 export default async function Home() {
+  const supabase = await createClient();
   const { data: products, error } = await supabase.from("products").select("*");
   return (
     <div className="flex flex-col gap-6 md:gap-8 lg:gap-10">

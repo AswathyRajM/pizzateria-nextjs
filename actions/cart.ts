@@ -1,9 +1,25 @@
 "use server";
 import { AddToCartType } from "@/helpers/types";
-import { supabase } from "@/utils/supabase/client";
+import { createClient } from "@/utils/supabase/server";
+import { cookies } from "next/headers";
+
+export async function checkCartId() {
+  const supabase = await createClient();
+  const cookieStore = await cookies();
+  const cartId = cookieStore.get("cartId")?.value;
+
+  if (cartId && cartId !== "null") {
+    console.log("Cart ID exists:", cartId);
+    return cartId;
+  }
+  console.log("No cart ID found.");
+  return null;
+}
 
 export const getCartIdAndCount = async (userId: string) => {
   try {
+    const supabase = await createClient();
+
     const { data: cartData, error } = await supabase
       .from("cart")
       .select("total_count, cart_id")
@@ -11,6 +27,13 @@ export const getCartIdAndCount = async (userId: string) => {
       .single();
 
     if (error) throw error;
+
+    const cookieStore = await cookies();
+
+    cookieStore.set("cartId", cartData?.cart_id || null, {
+      path: "/",
+      httpOnly: false,
+    });
 
     return {
       cartCount: cartData?.total_count || 0,
@@ -24,6 +47,7 @@ export const getCartIdAndCount = async (userId: string) => {
 
 export const fetchCartItems = async (cartId: string) => {
   try {
+    const supabase = await createClient();
     const { data: cart, error: insertCartError } = await supabase
       .from("cart_item")
       .select("*, product:products(*) ")
@@ -40,6 +64,7 @@ export const fetchCartItems = async (cartId: string) => {
 export const createCart = async (userId: string) => {
   try {
     if (!userId) return;
+    const supabase = await createClient();
     const { data: newCart, error: insertCartError } = await supabase
       .from("cart")
       .insert({ user_id: userId })
@@ -47,6 +72,13 @@ export const createCart = async (userId: string) => {
       .maybeSingle();
 
     if (insertCartError) throw insertCartError;
+    const cookieStore = await cookies();
+
+    cookieStore.set("cartId", newCart?.cart_id, {
+      path: "/",
+      httpOnly: false,
+    });
+
     return newCart?.cart_id;
   } catch (error) {
     console.error("Create cartid error", error);
@@ -57,6 +89,7 @@ export const createCart = async (userId: string) => {
 export const addItemToCart = async (item: AddToCartType, cartId: string) => {
   try {
     if (!cartId) return;
+    const supabase = await createClient();
     // Insert new cart item
     const { data, error: insertItemError } = await supabase
       .from("cart_item")
@@ -85,6 +118,7 @@ export const addOrUpdateCartItem = async (
 ) => {
   try {
     let finalCartId = cartId;
+    const supabase = await createClient();
 
     if (!finalCartId) {
       const { data: newCart, error: insertCartError } = await supabase
