@@ -3,7 +3,7 @@ import Deals from "../components/deals";
 import Featured from "../components/featured";
 import HeroBanner from "../components/hero-banner";
 import { ProductsListing } from "../components/products-listing";
-import { DEALITEMS } from "../helpers/constants";
+import { DEALITEMS } from "../utils/constants";
 import { getUserSession } from "@/actions/auth";
 
 export default async function Home() {

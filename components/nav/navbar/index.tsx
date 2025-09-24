@@ -7,11 +7,11 @@ import { GiHamburgerMenu } from "react-icons/gi";
 import { motion, AnimatePresence } from "framer-motion";
 import Cart from "../../cart";
 import useScrollPosition from "@/hooks/useScrollPosition";
-import { NAVLINKS } from "@/helpers/constants";
+import { NAVLINKS } from "@/utils/constants";
 import { useCartStore } from "@/store/cartStore";
 import { useUserState } from "@/store/userStore";
 import { getCartIdAndCount } from "@/actions/cart";
-import { CartIdAndCountType } from "@/helpers/types";
+import { CartIdAndCountType } from "@/utils/types";
 import { getUserSession } from "@/actions/auth";
 
 export default function Navbar() {
@@ -132,7 +132,6 @@ export default function Navbar() {
           )}
         </AnimatePresence>
       </div>
-      <Cart handleCart={handleCart} />
     </>
   );
 }

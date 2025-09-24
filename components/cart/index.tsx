@@ -10,14 +10,10 @@ import { useCartStore } from "@/store/cartStore";
 import { useEffect, useState } from "react";
 import { fetchCartItems } from "@/actions/cart";
 
-type CartProps = {
-  handleCart: () => void;
-};
 
-export default function Cart({ handleCart }: CartProps) {
-  const { cartId, cartCount, cart, shouldShowCart, setCart } = useCartStore(
-    (state) => state
-  );
+export default function Cart() {
+  const { cartId, cartCount, cart, shouldShowCart, setCart, setShowCart } =
+    useCartStore((state) => state);
   const [isCartLoading, setIsCartLoading] = useState<boolean>(false);
   let subtotal = 0;
   let addonsTotal = 0;
@@ -34,6 +30,10 @@ export default function Cart({ handleCart }: CartProps) {
     const newCart: any = await fetchCartItems(cartId!);
     setCart(newCart);
     setIsCartLoading(false);
+  };
+
+  const handleCart = () => {
+    setShowCart(!shouldShowCart);
   };
 
   useEffect(() => {

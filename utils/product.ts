@@ -1,4 +1,4 @@
-import { AddonType } from "@/helpers/types";
+import { AddonType } from "@/utils/types";
 
 interface AddOnProductType {
   addons?: AddonType[];

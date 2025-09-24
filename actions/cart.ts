@@ -1,5 +1,5 @@
 "use server";
-import { AddToCartType } from "@/helpers/types";
+import { AddonType, AddToCartType, CartItemType } from "@/utils/types";
 import { createClient } from "@/utils/supabase/server";
 import { cookies } from "next/headers";
 
@@ -86,24 +86,60 @@ export const createCart = async (userId: string) => {
   }
 };
 
-export const addItemToCart = async (item: AddToCartType, cartId: string) => {
+export const addItemToCart = async (
+  item: AddToCartType,
+  cartId: string,
+  cart: CartItemType[]
+) => {
   try {
     if (!cartId) return;
+
     const supabase = await createClient();
-    // Insert new cart item
-    const { data, error: insertItemError } = await supabase
-      .from("cart_item")
-      .insert({
-        cart_id: cartId,
-        product_id: item.product_id,
-        quantity: item.quantity,
-        addons: item.addons,
-      });
 
-    if (insertItemError) throw insertItemError;
+    // Normalize addons (compare by addon_id)
+    const normalizeAddons = (addons: AddonType[]) =>
+      [...addons]
+        .map((a) => a.addon_id)
+        .sort()
+        .join(",");
 
-    console.log(data);
-    return data;
+    const incomingAddons = normalizeAddons(item.addons || []);
+
+    // 1. Check if the same product + addons exist in cart
+    const existingCartItem = cart?.find(
+      (cartItem) =>
+        cartItem.product.product_id === item.product_id &&
+        normalizeAddons(cartItem.product.addons || []) === incomingAddons
+    );
+
+    if (existingCartItem) {
+      // Update quantity of existing item
+      const { data, error: updateError } = await supabase
+        .from("cart_item")
+        .update({
+          quantity: existingCartItem.quantity + item.quantity,
+        })
+        .eq("cart_item_id", existingCartItem.cart_item_id);
+
+      if (updateError) throw updateError;
+      console.log("Updated existing cart item:", data);
+      return data;
+    } else {
+      // Insert new cart item
+      const { data, error: insertItemError } = await supabase
+        .from("cart_item")
+        .insert({
+          cart_id: cartId,
+          product_id: item.product_id,
+          quantity: item.quantity,
+          addons: item.addons,
+        })
+        .select();
+
+      if (insertItemError) throw insertItemError;
+      console.log("Added new cart item:", data);
+      return data;
+    }
   } catch (error) {
     console.error("Add/update cart item error:", error);
     return null;

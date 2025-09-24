@@ -2,11 +2,13 @@ import Deals from "@/components/deals";
 import HeadingBanner from "@/components/heading-banner";
 import PageLayoutWrapper from "@/components/page-layout-wrapper";
 import { ProductsListing } from "@/components/products-listing";
-import { DEALITEMS } from "@/helpers/constants";
-import { supabase } from "@/utils/supabase-old/client";
+import { DEALITEMS } from "@/utils/constants";
+import { createClient } from "@/utils/supabase/server";
 import React from "react";
 
 async function PizzasPage() {
+  const supabase = await createClient();
+
   const { data: products, error } = await supabase.from("products").select("*");
 
   return (

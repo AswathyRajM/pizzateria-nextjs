@@ -1,7 +1,7 @@
 import React from "react";
 import PageLayoutWrapper from "../../../components/page-layout-wrapper";
 import Deals from "../../../components/deals";
-import { DEALITEMS } from "../../../helpers/constants";
+import { DEALITEMS } from "../../../utils/constants";
 import Featured from "../../../components/featured";
 import HeadingBanner from "../../../components/heading-banner";
 

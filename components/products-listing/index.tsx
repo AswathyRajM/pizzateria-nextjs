@@ -5,7 +5,7 @@ import Image from "next/image";
 import { motion } from "framer-motion";
 import Button from "../shared/button";
 import Link from "next/link";
-import { ProductType } from "../../helpers/types";
+import { ProductType } from "../../utils/types";
 
 interface ProductsProps {
   heading: string;
@@ -14,6 +14,9 @@ interface ProductsProps {
 
 export const ProductsListing = ({ heading, products }: ProductsProps) => {
   if (!products || !products.length) return <>No Products found</>;
+
+  const addtoCartPlp = async (product_id: string) => {};
+
   return (
     <div className="w-full flex items-center justify-center px-4 lg:px-10">
       <div className="relative max-w-6xl w-full">
@@ -64,7 +67,10 @@ export const ProductsListing = ({ heading, products }: ProductsProps) => {
                         ${product.original_price}
                       </span>
                     </p>
-                    <Button className="flex justify-between items-center text-[10px]">
+                    <Button
+                      onClick={() => addtoCartPlp(product.product_id)}
+                      className="flex justify-between items-center text-[10px]"
+                    >
                       Add to Cart
                     </Button>
                   </div>

@@ -7,7 +7,7 @@ import Button from "../shared/button";
 import QuantityButton from "../shared/quantity-button";
 import { useToastStore } from "../../store/toastStore";
 import { motion, AnimatePresence } from "framer-motion";
-import { AddonType, ProductType } from "@/helpers/types";
+import { AddonType, ProductType } from "@/utils/types";
 import { useCartStore } from "@/store/cartStore";
 import { addItemToCart, createCart } from "@/actions/cart";
 import { useUserState } from "@/store/userStore";
@@ -19,9 +19,8 @@ export default function PDP({
   product: ProductType;
   addonIds: string[];
 }) {
-  const { cartId, increaseCartCount, setShowCart, setCartCount } = useCartStore(
-    (state) => state
-  );
+  const { cartId, cart, increaseCartCount, setShowCart, setCartCount } =
+    useCartStore((state) => state);
   const { user } = useUserState((state) => state);
   const showToast = useToastStore((state) => state.showToast);
 
@@ -71,7 +70,7 @@ export default function PDP({
       quantity,
       addons: chosenAddons,
     };
-    await addItemToCart(item, currentCartId!);
+    await addItemToCart(item, currentCartId!, cart);
     increaseCartCount();
     setShowCart(true);
     showToast("Added to cart!", "success");

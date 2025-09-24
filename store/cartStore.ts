@@ -3,7 +3,7 @@ import {
   AddToCartType,
   CartIdAndCountType,
   CartItemType,
-} from "../helpers/types";
+} from "../utils/types";
 import { fetchCartItems } from "@/actions/cart";
 
 interface CartState {

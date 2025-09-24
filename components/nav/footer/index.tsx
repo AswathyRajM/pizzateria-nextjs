@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { FOOTER_NAVLINKS } from "@/helpers/constants";
+import { FOOTER_NAVLINKS } from "@/utils/constants";
 
 const FooterComponent = () => {
   const Copyright =
