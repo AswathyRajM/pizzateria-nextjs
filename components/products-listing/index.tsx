@@ -5,11 +5,11 @@ import Image from "next/image";
 import { motion } from "framer-motion";
 import Button from "../shared/button";
 import Link from "next/link";
-import { Product } from "../../store/types";
+import { ProductType } from "../../helpers/types";
 
 interface ProductsProps {
   heading: string;
-  products: Product[] | null;
+  products: ProductType[] | null;
 }
 
 export const ProductsListing = ({ heading, products }: ProductsProps) => {

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { FaPizzaSlice, FaUserCircle } from "react-icons/fa";
 import { GiHamburgerMenu } from "react-icons/gi";
@@ -8,19 +8,31 @@ import { motion, AnimatePresence } from "framer-motion";
 import Cart from "../../cart";
 import useScrollPosition from "@/hooks/useScrollPosition";
 import { NAVLINKS } from "@/helpers/constants";
-import { useCartStore } from "@/store/cart";
+import { useCartStore } from "@/store/cartStore";
+import { useUserState } from "@/store/userStore";
+import { getCartIdAndCount } from "@/actions/cart";
+import { CartIdAndCountType } from "@/helpers/types";
 
-export default function Navbar() {
- 
+export default function Navbar({ userSession }: { userSession: any }) {
   const [hamburgerOpened, setHamburgerOpened] = useState(false);
   const scrollY = useScrollPosition();
-  const {shouldShowCart, cart, setShowCart } = useCartStore((state) => state);
+  const { shouldShowCart, cartCount, setShowCart, setCartCount } = useCartStore(
+    (state) => state
+  );
+  const { setAuth } = useUserState((state) => state);
 
-  const cartLength = cart
-    .map((item) => item.quantity)
-    .reduce((a, b) => a + b, 0);
+  const fetchCart = async (userId: string) => {
+    const cartCount: CartIdAndCountType = await getCartIdAndCount(userId);
+    setCartCount(cartCount);
+  };
 
-  
+  useEffect(() => {
+    if (userSession) {
+      setAuth(userSession);
+      if (userSession?.user.id) fetchCart(userSession.user.id);
+    }
+  }, [userSession, setAuth]);
+
   const handleCart = () => {
     setShowCart(!shouldShowCart);
   };
@@ -86,7 +98,7 @@ export default function Navbar() {
             >
               <FaPizzaSlice className="group-hover:text-yellow-500" />
               <span className="absolute -top-1 -right-2 bg-yellow-500 text-black text-xs rounded-full w-4 h-4 flex items-center justify-center">
-                {cartLength}
+                {cartCount}
               </span>
             </button>
           </div>

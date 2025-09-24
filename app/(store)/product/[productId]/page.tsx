@@ -1,6 +1,7 @@
+import { fetchProductDetails } from "@/actions/product";
 import PageLayoutWrapper from "@/components/page-layout-wrapper";
 import PDP from "@/components/pdp";
-import { supabase } from "@/lib/supabase";
+import { notFound } from "next/navigation";
 
 interface ProductPageProps {
   params: {
@@ -9,12 +10,10 @@ interface ProductPageProps {
 }
 
 export default async function ProductPage({ params }: ProductPageProps) {
-  const { productId } = params;
-  let { data: product, error } = await supabase
-    .from("products")
-    .select("*")
-    .eq("product_id", productId)
-    .single();
+  const { productId } = await params;
+
+  const product = await fetchProductDetails(productId);
+  if (!productId || product?.error) return notFound();
 
   return (
     <PageLayoutWrapper addMarginTop>

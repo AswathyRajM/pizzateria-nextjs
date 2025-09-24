@@ -2,7 +2,7 @@
 "use client";
 
 import { motion, AnimatePresence } from "framer-motion";
-import { useToastStore } from "../../store/toast";
+import { useToastStore } from "../../store/toastStore";
 import { AiFillCheckSquare ,AiFillCloseSquare ,AiOutlineInfo } from "react-icons/ai";
 
 export default function Toast() {

@@ -1,9 +1,9 @@
 import Deals from "@/components/deals";
 import HeadingBanner from "@/components/heading-banner";
 import PageLayoutWrapper from "@/components/page-layout-wrapper";
-import { ProductsListing } from "@/components/productsListing";
+import { ProductsListing } from "@/components/products-listing";
 import { DEALITEMS } from "@/helpers/constants";
-import { supabase } from "@/lib/supabase";
+import { supabase } from "@/utils/supabase/client";
 import React from "react";
 
 async function PizzasPage() {

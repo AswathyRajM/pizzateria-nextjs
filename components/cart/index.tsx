@@ -2,27 +2,25 @@
 
 import Link from "next/link";
 import Button from "../shared/button";
-import { useCartStore } from "../../store/cart";
 import Image from "next/image";
 import { VscClose } from "react-icons/vsc";
-import { useToastStore } from "../../store/toast";
 import Popup from "../shared/popup";
+import { useToastStore } from "@/store/toastStore";
+import { useCartStore } from "@/store/cartStore";
 
 type CartProps = {
   handleCart: () => void;
 };
 
 export default function Cart({ handleCart }: CartProps) {
-  const { cart, shouldShowCart, removeFromCart } = useCartStore(
-    (state) => state
-  );
+  const { cart, shouldShowCart } = useCartStore((state) => state);
   let subtotal = 0;
   let addonsTotal = 0;
 
   const showToast = useToastStore((state) => state.showToast);
 
   const handleRemoveFromCart = (product_id: string) => {
-    removeFromCart(product_id);
+    // removeFromCart(product_id);
     showToast("Removed from cart!", "success");
   };
 
@@ -35,11 +33,11 @@ export default function Cart({ handleCart }: CartProps) {
     >
       {/* Items */}
       <div className="flex flex-col px-4 pt-8 py-4 gap-4 overflow-y-auto custom-scrollbar">
-        {cart.length === 0 ? (
+        {cart?.length === 0 ? (
           <p className="text-center text-gray-400">Your cart is empty.</p>
         ) : (
-          cart.map((item) => {
-            const product = {};
+          cart?.map((item) => {
+            const product = item.product;
             if (!product) return null;
 
             const selectedAddons = item.addons || [];
@@ -55,8 +53,8 @@ export default function Cart({ handleCart }: CartProps) {
 
             return (
               <Link
-                href={`/product/${item.product_id}`}
-                key={item.product_id}
+                href={`/product/${product.product_id}`}
+                key={product.product_id}
                 className="flex gap-2 border-b border-gray-800 pb-4"
               >
                 {/* Product Image */}
@@ -81,7 +79,7 @@ export default function Cart({ handleCart }: CartProps) {
                       </h5>
                       <VscClose
                         className="cursor-pointer"
-                        onClick={() => handleRemoveFromCart(item.product_id)}
+                        onClick={() => handleRemoveFromCart(product.product_id)}
                       />
                     </div>
                     <div className="w-full">
@@ -119,7 +117,7 @@ export default function Cart({ handleCart }: CartProps) {
       </div>
 
       {/* Buy Now Button */}
-      {cart.length > 0 && (
+      {cart?.length > 0 && (
         <div className="flex flex-col mb-8 mt-2 gap-2 px-4 text-sm">
           <div className="flex justify-between">
             Subtotal{" "}

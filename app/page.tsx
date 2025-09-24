@@ -1,9 +1,10 @@
-import { supabase } from "@/lib/supabase";
+import { supabase } from "@/utils/supabase/client";
 import Deals from "../components/deals";
 import Featured from "../components/featured";
 import HeroBanner from "../components/hero-banner";
-import { ProductsListing } from "../components/productsListing";
+import { ProductsListing } from "../components/products-listing";
 import { DEALITEMS } from "../helpers/constants";
+import { getUserSession } from "@/actions/auth";
 
 export default async function Home() {
   const { data: products, error } = await supabase.from("products").select("*");

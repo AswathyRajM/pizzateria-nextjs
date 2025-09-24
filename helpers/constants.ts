@@ -26,3 +26,6 @@ export   const NAVLINKS = [
   { label: "Privacy Policy", href: "/privacy-policy" },
   { label: "Careers", href: "/careers" },
 ];
+
+
+export const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL; 

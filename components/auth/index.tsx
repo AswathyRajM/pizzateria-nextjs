@@ -6,16 +6,7 @@ function Auth() {
   const shouldShowCart = false;
   const handleCart = () => {};
   return (
-       <AnimatePresence>
-      <Popup
-        heading="Your Cart"
-        openPopup={shouldShowCart}
-        isCart
-        closePopup={handleCart}
-      ><></>
-        
-      </Popup>
-    </AnimatePresence>
+      <></>
   )
 }
 

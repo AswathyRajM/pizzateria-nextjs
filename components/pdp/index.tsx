@@ -5,18 +5,22 @@ import { useParams } from "next/navigation";
 import Image from "next/image";
 import Button from "../shared/button";
 import QuantityButton from "../shared/quantity-button";
-import { useCartStore } from "../../store/cart";
-import { useToastStore } from "../../store/toast";
+import { useToastStore } from "../../store/toastStore";
 import { motion, AnimatePresence } from "framer-motion";
-import { Addon, Product } from "@/store/types";
+import { AddonType, ProductType } from "@/helpers/types";
+import { useCartStore } from "@/store/cartStore";
+import { addItemToCart, createCart } from "@/actions/cart";
+import { useUserState } from "@/store/userStore";
 
-export default function PDP({ product }: { product: Product }) {
-  const { productId } = useParams(); // fetch product ID from URL
-  const { addToCart, setShowCart } = useCartStore((state) => state);
+export default function PDP({ product }: { product: ProductType }) {
+  const { cartId, increaseCartCount, setShowCart, setCartCount } = useCartStore(
+    (state) => state
+  );
+  const { user } = useUserState((state) => state);
   const showToast = useToastStore((state) => state.showToast);
 
   if (!product) {
-    return <div className="text-center py-20">Product not found.</div>;
+    return <div className="text-center py-20">ProductType not found.</div>;
   }
 
   const [quantity, setQuantity] = useState(1);
@@ -33,22 +37,30 @@ export default function PDP({ product }: { product: Product }) {
   const total = useMemo(() => {
     const addonsTotal =
       product.addons
-        ?.filter((addon: Addon) => selectedAddons.includes(addon.addon_id))
-        .reduce((sum: number, addon: Addon) => sum + addon.price, 0) || 0; // default to 0
+        ?.filter((addon: AddonType) => selectedAddons.includes(addon.addon_id))
+        .reduce((sum: number, addon: AddonType) => sum + addon.price, 0) || 0; // default to 0
 
     return (product.price + addonsTotal) * quantity;
   }, [product.price, product.addons, selectedAddons, quantity]);
 
-  const handleAddToCart = () => {
+  const handleAddToCart = async () => {
+    let currentCartId = cartId;
+
+    if (!currentCartId && user?.id) {
+      currentCartId = await createCart(user.id);
+      setCartCount({ cartCount: 0, cartId: currentCartId });
+    }
+
     const chosenAddons = product.addons?.filter((addon) =>
       selectedAddons.includes(addon.addon_id)
     );
-
-    addToCart({
+    const item = {
       product_id: product.product_id,
       quantity,
       addons: chosenAddons,
-    });
+    };
+    await addItemToCart(item, currentCartId!);
+    increaseCartCount();
     setShowCart(true);
     showToast("Added to cart!", "success");
   };
