@@ -3,6 +3,7 @@
 import { FaTimes } from "react-icons/fa";
 import { motion, AnimatePresence } from "framer-motion";
 import { useCartStore } from "@/store/cartStore";
+import { memo } from "react";
 
 type PopupProps = {
   openPopup: boolean;
@@ -12,7 +13,7 @@ type PopupProps = {
   closePopup: () => void;
 };
 
-export default function Popup({
+function Popup({
   openPopup,
   children,
   heading,
@@ -38,6 +39,7 @@ export default function Popup({
           initial={{ x: "100%" }}
           animate={{ x: 0 }}
           exit={{ x: "100%" }}
+          onClick={(e) => e.stopPropagation()}
           transition={{ duration: 0.3, ease: "easeInOut" }}
           className={`bg-neutral-900 shadow-md fixed top-0 right-0 z-[999] w-screen h-full  md:w-[350px] ${
             isCart && cart?.length >= 4 ? "grid grid-rows-[auto_1fr_auto]" : ""
@@ -61,3 +63,5 @@ export default function Popup({
     </AnimatePresence>
   );
 }
+
+export default memo(Popup);

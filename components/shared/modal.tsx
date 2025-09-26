@@ -3,6 +3,7 @@
 import { FaTimes } from "react-icons/fa";
 import { motion, AnimatePresence } from "framer-motion";
 import { useCartStore } from "@/store/cartStore";
+import { memo } from "react";
 
 type ModalProps = {
   openModal: boolean;
@@ -11,15 +12,12 @@ type ModalProps = {
   closeModal: () => void;
 };
 
-export default function Modal({
-  children,
-  heading,
-}: ModalProps) {
+function Modal({ children, heading }: ModalProps) {
   const { isModalOpen, setShowModal } = useCartStore((state) => state);
 
-  const closeModal = ()=>{
-     setShowModal(false)
-  }
+  const closeModal = () => {
+    setShowModal(false);
+  };
 
   return (
     <AnimatePresence>
@@ -39,7 +37,9 @@ export default function Modal({
             animate={{ scale: 1, opacity: 1 }}
             exit={{ scale: 0.9, opacity: 0 }}
             transition={{ duration: 0.3, ease: "easeInOut" }}
-            className={'bg-neutral-900 shadow-lg w-[90%] max-w-sm sm:w-[90%] md:w-[500px] lg:w-[600px] max-h-[90vh] overflow-hidden z-[998]'}
+            className={
+              "bg-neutral-900 shadow-lg w-[90%] max-w-sm sm:w-[90%] md:w-[500px] lg:w-[600px] max-h-[90vh] overflow-hidden z-[998]"
+            }
             onClick={(e) => e.stopPropagation()} // prevent closing when clicking inside
           >
             {/* Header */}
@@ -61,3 +61,4 @@ export default function Modal({
     </AnimatePresence>
   );
 }
+export default memo(Modal);
