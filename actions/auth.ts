@@ -42,3 +42,54 @@ export async function getUserSession() {
     return null;
   }
 }
+
+
+export const handleLogin = async ({
+  email,
+  password,
+}: {
+  email: string;
+  password: string;
+}) => {
+  const supabase = createClient();
+  try {
+    const { error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
+    if (error) throw error;
+    return { success: true };
+  } catch (error: unknown) {
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : "An error occurred",
+    };
+  }
+};
+
+export const handleSignup = async ({
+  email,
+  password,
+}: {
+  email: string;
+  password: string;
+}) => {
+  const supabase = createClient();
+  try {
+    const { error } = await supabase.auth.signUp({
+      email,
+      password,
+      options: {
+        emailRedirectTo: `${window.location.origin}/protected`,
+      },
+    });
+    if (error) throw error;
+  
+    return { success: true };
+  } catch (error: unknown) {
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : "An error occurred",
+    };
+  }
+};

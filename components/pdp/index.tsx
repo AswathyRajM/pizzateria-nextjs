@@ -78,7 +78,7 @@ export default function PDP({
   };
   return (
     <AnimatePresence>
-      <main className="max-w- md:max-w-6xl py-0 px-6 md:py-12 mx-auto grid md:grid-cols-2 gap-6 md:gap-12">
+      <main className="md:max-w-6xl py-0 px-6 md:py-12 mx-auto grid md:grid-cols-2 gap-6 md:gap-12">
         {/* Left: Image */}
         <motion.aside
           initial={{ opacity: 0, y: 30 }}

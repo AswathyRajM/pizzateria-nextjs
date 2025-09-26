@@ -1,20 +1,25 @@
-import React from 'react'
+import React, { ButtonHTMLAttributes } from "react";
+
+type ButtonProps = {
+  children: React.ReactNode;
+  className?: string;
+  inverted?: boolean;
+  loading?: boolean;
+  type?: "button" | "submit" | "reset";
+  onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
+};
 
 function Button({
   children,
   className,
   inverted,
   loading,
+  type = "button",
   onClick,
-}: {
-  children: React.ReactNode;
-  className?: string;
-  loading?: boolean;
-  inverted?: boolean;
-  onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
-}) {
+}: ButtonProps) {
   return (
     <button
+      type={type}
       onClick={onClick}
       disabled={loading}
       className={`uppercase cursor-pointer ${
@@ -28,4 +33,4 @@ function Button({
   );
 }
 
-export default Button
+export default Button;

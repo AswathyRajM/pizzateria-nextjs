@@ -5,7 +5,6 @@ import Link from "next/link";
 import { FaPizzaSlice, FaUserCircle } from "react-icons/fa";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { motion, AnimatePresence } from "framer-motion";
-import Cart from "../../cart";
 import useScrollPosition from "@/hooks/useScrollPosition";
 import { NAVLINKS } from "@/utils/constants";
 import { useCartStore } from "@/store/cartStore";
@@ -49,7 +48,7 @@ export default function Navbar() {
   return (
     <>
       <div
-        className={`fixed top-0 w-screen z-50 transition-colors duration-700 ${
+        className={`fixed top-0 w-screen z-50 transition-colors duration-700 max-w-screen overflow-hidden ${
           hamburgerOpened
             ? "bg-red-600 transition-none duration-0"
             : scrollY > 0
@@ -92,7 +91,7 @@ export default function Navbar() {
             <div className="flex items-center gap-10">
               {/* User Dropdown */}
               <div className="relative group">
-                <Link href="/" className="text-white text-2xl">
+                <Link href="/account" className="text-white text-2xl">
                   <FaUserCircle className="group-hover:text-yellow-500" />
                 </Link>
               </div>

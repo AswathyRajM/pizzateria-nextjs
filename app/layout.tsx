@@ -4,7 +4,6 @@ import "./globals.css";
 import Navbar from "../components/nav/navbar";
 import FooterComponent from "../components/nav/footer";
 import Toast from "../components/shared/toast";
-import { getUserSession } from "@/actions/auth";
 import Cart from "@/components/cart";
 
 const geistSans = Geist({

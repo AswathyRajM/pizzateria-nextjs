@@ -10,7 +10,7 @@ const FooterComponent = () => {
 
   return (
     <footer className="bg-black w-full flex flex-col items-center justify-center text-sm mt-4">
-      <div className="flex flex-col items-center justify-between w-full max-w-6xl px-4 lg:px-10">
+      <div className="flex flex-col items-center justify-between w-full max-w-6xl">
         {/* Container */}
         <div className=" items-start justify-between w-full py-10 px-4 lg:px-0 gap-8 grid grid-cols-1 gap-y-6 max-[400px] md:grid-cols-5">
           {/* Logo */}
