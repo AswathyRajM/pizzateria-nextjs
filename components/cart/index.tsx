@@ -8,18 +8,10 @@ import Popup from "../shared/popup";
 import { useToastStore } from "@/store/toastStore";
 import { useCartStore } from "@/store/cartStore";
 import { useEffect, useState } from "react";
-import { fetchCartItems, removeCartItem } from "@/actions/cart";
-``;
+import { removeCartItem } from "@/actions/cart";
 export default function Cart() {
-  const {
-    cartId,
-    cartCount,
-    cart,
-    shouldShowCart,
-    setCart,
-    setShowCart,
-    refreshCart,
-  } = useCartStore((state) => state);
+  const { cartId, cartCount, cart, shouldShowCart, setShowCart, refreshCart } =
+    useCartStore((state) => state);
   const [isCartLoading, setIsCartLoading] = useState<boolean>(false);
   let subtotal = 0;
   let addonsTotal = 0;
@@ -31,17 +23,16 @@ export default function Cart() {
     setIsCartLoading(true);
     const response: any = await removeCartItem(cartItemId!);
     refreshCart();
-    setIsCartLoading(false);
     showToast(
       response ? "Removed from cart!" : "Something went wron!",
       response ? "success" : "error"
     );
+    setIsCartLoading(false);
   };
 
   const fetchCart = async () => {
     setIsCartLoading(true);
-    const newCart: any = await fetchCartItems(cartId!);
-    setCart(newCart);
+    await refreshCart();
     setIsCartLoading(false);
   };
 

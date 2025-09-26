@@ -24,7 +24,15 @@ export default function Popup({
   if (!openPopup) return null;
   return (
     <AnimatePresence>
-      {
+      <motion.div
+        key="Modal-overlay"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        transition={{ duration: 0.2 }}
+        className="fixed inset-0 z-[998] flex items-center justify-center bg-black/50"
+        onClick={closePopup}
+      >
         <motion.aside
           key="cart"
           initial={{ x: "100%" }}
@@ -49,7 +57,7 @@ export default function Popup({
           </div>
           {children}
         </motion.aside>
-      }
+      </motion.div>
     </AnimatePresence>
   );
 }

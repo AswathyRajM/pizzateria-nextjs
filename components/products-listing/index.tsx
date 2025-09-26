@@ -6,7 +6,7 @@ import { motion } from "framer-motion";
 import Button from "../shared/button";
 import Link from "next/link";
 import { ProductType } from "../../utils/types";
-import CenterPopup from "../shared/center-popup";
+import CenterPopup from "../shared/modal";
 import { useMemo, useState } from "react";
 import { useCartStore } from "@/store/cartStore";
 import QuantityButton from "../shared/quantity-button";

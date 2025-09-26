@@ -12,12 +12,10 @@ interface CartState {
   cartId: string | null;
   shouldShowCart: boolean;
   isModalOpen: boolean;
-  initialized: boolean; // to track if cart was loaded
   setShowCart: (value: boolean) => void;
   addToCart: (item: AddToCartType) => void;
   removeFromCart: (item: AddToCartType) => void;
   clearCart: () => void;
-  setCart: (cart: CartItemType[]) => void;
   setShowModal: (value: boolean) => void;
   setCartCount: (cart: CartIdAndCountType) => void;
   refreshCart: () => void;
@@ -27,7 +25,6 @@ interface CartState {
 export const useCartStore = create<CartState>((set, get) => ({
   cart: [],
   shouldShowCart: false,
-  initialized: false,
   cartCount: 0,
   cartId: null,
   isModalOpen: false,
@@ -40,8 +37,6 @@ export const useCartStore = create<CartState>((set, get) => ({
   setShowModal: (value) => {
     set({ isModalOpen: value, shouldShowCart: false });
   },
-
-  setCart: (cart) => set({ cart }),
 
   addToCart: (item) => {},
 
