@@ -11,7 +11,7 @@ function QuantityButton({
 }) {
   return (
     <button
-      className={`cursor-pointer px-3 text-2xl border border-gray-400 hover:text-white hover:border-white ${className}`}
+      className={`py-1 bg-gray-700 cursor-pointer px-3 text-xl hover:text-white ${className}`}
       onClick={onClick}
     >
       {children}

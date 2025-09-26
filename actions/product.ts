@@ -1,5 +1,6 @@
 import { productAddonFormat } from "@/utils/product";
 import { createClient } from "@/utils/supabase/server";
+import { ProductType } from "@/utils/types";
 
 export const fetchProductDetails = async (productId: string) => {
   try {
@@ -22,6 +23,29 @@ export const fetchProductDetails = async (productId: string) => {
       return { error: true };
     }
     return { ...product, addons: productAddonFormat(product.product_addons) };
+  } catch (error) {
+    console.log({ error });
+    return { error: true };
+  }
+};
+
+export const fetchProductListing = async () => {
+  try {
+    const supabase = await createClient();
+
+    const { data: products, error } = await supabase.from("products").select(
+      `*, product_addons (
+          addons (*)
+        )`
+    );
+    if (error) throw error;
+    if (!products || !products.length) {
+      console.log(`Products not found`);
+      return { error: true };
+    }
+    return products.map((product: any) => {
+      return { ...product, addons: productAddonFormat(product.product_addons) };
+    });
   } catch (error) {
     console.log({ error });
     return { error: true };

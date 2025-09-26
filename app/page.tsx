@@ -4,11 +4,10 @@ import Featured from "../components/featured";
 import HeroBanner from "../components/hero-banner";
 import { ProductsListing } from "../components/products-listing";
 import { DEALITEMS } from "../utils/constants";
-import { getUserSession } from "@/actions/auth";
+import { fetchProductListing } from "@/actions/product";
 
 export default async function Home() {
-  const supabase = await createClient();
-  const { data: products, error } = await supabase.from("products").select("*");
+  const products: any = await fetchProductListing();
   return (
     <div className="flex flex-col gap-6 md:gap-8 lg:gap-10">
       <HeroBanner />

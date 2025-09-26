@@ -11,11 +11,13 @@ interface CartState {
   cartCount: number;
   cartId: string | null;
   shouldShowCart: boolean;
+  isModalOpen: boolean;
   initialized: boolean; // to track if cart was loaded
   setShowCart: (value: boolean) => void;
   addToCart: (item: AddToCartType) => void;
   clearCart: () => void;
   setCart: (cart: CartItemType[]) => void;
+  setShowModal: (value: boolean) => void;
   setCartCount: (cart: CartIdAndCountType) => void;
   increaseCartCount: () => void;
   decreaseCartCount: () => void;
@@ -27,18 +29,20 @@ export const useCartStore = create<CartState>((set, get) => ({
   initialized: false,
   cartCount: 0,
   cartId: null,
-
+  isModalOpen: true,
   setCartCount: (cart) =>
     set({ cartCount: cart.cartCount, cartId: cart.cartId }),
 
   setShowCart: (value) => set({ shouldShowCart: value }),
+
+  setShowModal: (value) => set({ isModalOpen: value }),
 
   setCart: (cart) => set({ cart }),
 
   addToCart: (item) => {},
 
   increaseCartCount: async () => {
-    const state = get(); 
+    const state = get();
     const newCart: any = await fetchCartItems(state.cartId!);
     if (newCart) {
       set({ cart: newCart, cartCount: newCart.length });

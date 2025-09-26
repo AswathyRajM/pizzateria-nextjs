@@ -6,6 +6,13 @@ import { motion } from "framer-motion";
 import Button from "../shared/button";
 import Link from "next/link";
 import { ProductType } from "../../utils/types";
+import CenterPopup from "../shared/center-popup";
+import { useMemo, useState } from "react";
+import { useCartStore } from "@/store/cartStore";
+import QuantityButton from "../shared/quantity-button";
+import { addItemToCart, createCart } from "@/actions/cart";
+import { useUserState } from "@/store/userStore";
+import { useToastStore } from "@/store/toastStore";
 
 interface ProductsProps {
   heading: string;
@@ -13,9 +20,85 @@ interface ProductsProps {
 }
 
 export const ProductsListing = ({ heading, products }: ProductsProps) => {
+  const [selectedProduct, setSelectedProduct] = useState<ProductType | null>(
+    null
+  );
+  const [quantity, setQuantity] = useState(1);
+  const [selectedAddons, setSelectedAddons] = useState<string[]>([]);
+  const {
+    cart,
+    cartId,
+    isModalOpen,
+    setShowModal,
+    setCartCount,
+    increaseCartCount,
+    setShowCart,
+  } = useCartStore((state) => state);
+  const { user } = useUserState((state) => state);
+  const showToast = useToastStore((state) => state.showToast);
+
+  const toggleAddon = (addon_id: string) => {
+    setSelectedAddons((prev) =>
+      prev.includes(addon_id)
+        ? prev.filter((a) => a !== addon_id)
+        : [...prev, addon_id]
+    );
+  };
+
+  const handleQuantity = (type: "inc" | "dec") => {
+    setQuantity((prev) => {
+      if (type === "dec" && prev > 1) return prev - 1;
+      if (type === "inc") return prev + 1;
+      return prev;
+    });
+  };
+
+  const total = useMemo(() => {
+    if (!selectedProduct) return 0;
+    const addonsTotal =
+      selectedProduct.addons
+        ?.filter((addon) => selectedAddons.includes(addon.addon_id))
+        .reduce((sum, addon) => sum + addon.price, 0) || 0;
+
+    return (selectedProduct.price + addonsTotal) * quantity;
+  }, [selectedProduct, selectedAddons, quantity]);
+
   if (!products || !products.length) return <>No Products found</>;
 
-  const addtoCartPlp = async (product_id: string) => {};
+  const closeModal = () => {
+    setShowModal(false);
+    setSelectedProduct(null);
+    setSelectedAddons([]);
+    setQuantity(1);
+  };
+
+  const addtoCartPlp = (product: ProductType) => {
+    setSelectedProduct(product);
+    setShowModal(true);
+  };
+
+  const handleAddToCartConfirm = async () => {
+    let currentCartId = cartId;
+
+    if (!currentCartId && user?.id) {
+      currentCartId = await createCart(user.id);
+      setCartCount({ cartCount: 0, cartId: currentCartId });
+    }
+
+    const chosenAddons = selectedProduct?.addons?.filter((addon) =>
+      selectedAddons.includes(addon.addon_id)
+    );
+    const item = {
+      product_id: selectedProduct?.product_id,
+      quantity,
+      addons: chosenAddons,
+    };
+    await addItemToCart(item, currentCartId!, cart);
+    increaseCartCount();
+    closeModal();
+    showToast("Added to cart!", "success");
+    setShowCart(true);
+  };
 
   return (
     <div className="w-full flex items-center justify-center px-4 lg:px-10">
@@ -68,7 +151,10 @@ export const ProductsListing = ({ heading, products }: ProductsProps) => {
                       </span>
                     </p>
                     <Button
-                      onClick={() => addtoCartPlp(product.product_id)}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        addtoCartPlp(product);
+                      }}
                       className="flex justify-between items-center text-[10px]"
                     >
                       Add to Cart
@@ -80,6 +166,73 @@ export const ProductsListing = ({ heading, products }: ProductsProps) => {
           ))}
         </div>
       </div>
+      {/* Modal */}
+
+      {isModalOpen && selectedProduct ? (
+        <CenterPopup
+          closeModal={closeModal}
+          openModal={isModalOpen}
+          heading={selectedProduct ? selectedProduct.name : "Select Add-Ons"}
+        >
+          {selectedProduct && (
+            <div className="text-sm flex flex-col h-fit">
+              {/* Quantity Selector */}
+              <div className="flex items-center justify-between">
+                <span className="font-medium">Quantity:</span>
+                <div className="flex items-center gap-3">
+                  <QuantityButton onClick={() => handleQuantity("dec")}>
+                    -
+                  </QuantityButton>
+                  <span>{quantity}</span>
+                  <QuantityButton onClick={() => handleQuantity("inc")}>
+                    +
+                  </QuantityButton>
+                </div>
+              </div>
+              {/* Addons */}
+              {selectedProduct.addons?.length ? (
+                <div className="mt-4">
+                  <h3 className="text-base font-medium">Add-ons:</h3>
+                  <div className="flex flex-col mt-2">
+                    {selectedProduct.addons.map((addon) => (
+                      <label
+                        key={addon.addon_id}
+                        className="flex items-center justify-between border-b px-1 py-2 border-b-gray-800 cursor-pointer hover:bg-gray-900"
+                      >
+                        <div className="flex items-center gap-2">
+                          <input
+                            type="checkbox"
+                            checked={selectedAddons.includes(addon.addon_id)}
+                            onChange={() => toggleAddon(addon.addon_id)}
+                            className="h-4 w-4"
+                          />
+                          <span>{addon.name}</span>
+                        </div>
+                        <span>+${addon.price.toFixed(2)}</span>
+                      </label>
+                    ))}
+                  </div>
+                </div>
+              ) : null}
+
+              {/* Total Price */}
+              <div className="flex justify-between items-center mt-6 text-lg font-semibold">
+                <span>Total:</span>
+                <span>${total.toFixed(2)}</span>
+              </div>
+
+              {/* Confirm Button */}
+              <div className="mt-6">
+                <Button className="w-full" onClick={handleAddToCartConfirm}>
+                  Confirm & Add to Cart
+                </Button>
+              </div>
+            </div>
+          )}
+        </CenterPopup>
+      ) : (
+        <></>
+      )}
     </div>
   );
 };

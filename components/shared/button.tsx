@@ -9,7 +9,7 @@ function Button({
   children: React.ReactNode;
   className?: string;
   inverted?: boolean;
-  onClick?: () => void;
+  onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
 }) {
   return (
     <button
