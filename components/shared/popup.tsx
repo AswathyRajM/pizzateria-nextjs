@@ -31,7 +31,7 @@ export default function Popup({
           animate={{ x: 0 }}
           exit={{ x: "100%" }}
           transition={{ duration: 0.3, ease: "easeInOut" }}
-          className={`bg-neutral-900 shadow-md fixed top-0 right-0 z-[999] w-[350px] h-full  md:w-[350px] sm:w-[80vw] ${
+          className={`bg-neutral-900 shadow-md fixed top-0 right-0 z-[999] w-screen h-full  md:w-[350px] ${
             isCart && cart?.length >= 4 ? "grid grid-rows-[auto_1fr_auto]" : ""
           }`}
         >

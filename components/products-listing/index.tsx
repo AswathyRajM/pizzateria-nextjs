@@ -31,11 +31,12 @@ export const ProductsListing = ({ heading, products }: ProductsProps) => {
     isModalOpen,
     setShowModal,
     setCartCount,
-    increaseCartCount,
+    refreshCart,
     setShowCart,
   } = useCartStore((state) => state);
   const { user } = useUserState((state) => state);
   const showToast = useToastStore((state) => state.showToast);
+  const [isLoading, setIsLoading] = useState(false);
 
   const toggleAddon = (addon_id: string) => {
     setSelectedAddons((prev) =>
@@ -79,6 +80,7 @@ export const ProductsListing = ({ heading, products }: ProductsProps) => {
 
   const handleAddToCartConfirm = async () => {
     let currentCartId = cartId;
+    setIsLoading(true);
 
     if (!currentCartId && user?.id) {
       currentCartId = await createCart(user.id);
@@ -94,8 +96,9 @@ export const ProductsListing = ({ heading, products }: ProductsProps) => {
       addons: chosenAddons,
     };
     await addItemToCart(item, currentCartId!, cart);
-    increaseCartCount();
     closeModal();
+    refreshCart();
+    setIsLoading(false);
     showToast("Added to cart!", "success");
     setShowCart(true);
   };
@@ -223,7 +226,11 @@ export const ProductsListing = ({ heading, products }: ProductsProps) => {
 
               {/* Confirm Button */}
               <div className="mt-6">
-                <Button className="w-full" onClick={handleAddToCartConfirm}>
+                <Button
+                  loading={isLoading}
+                  className="w-full"
+                  onClick={handleAddToCartConfirm}
+                >
                   Confirm & Add to Cart
                 </Button>
               </div>

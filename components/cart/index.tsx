@@ -8,21 +8,34 @@ import Popup from "../shared/popup";
 import { useToastStore } from "@/store/toastStore";
 import { useCartStore } from "@/store/cartStore";
 import { useEffect, useState } from "react";
-import { fetchCartItems } from "@/actions/cart";
-
-
+import { fetchCartItems, removeCartItem } from "@/actions/cart";
+``;
 export default function Cart() {
-  const { cartId, cartCount, cart, shouldShowCart, setCart, setShowCart } =
-    useCartStore((state) => state);
+  const {
+    cartId,
+    cartCount,
+    cart,
+    shouldShowCart,
+    setCart,
+    setShowCart,
+    refreshCart,
+  } = useCartStore((state) => state);
   const [isCartLoading, setIsCartLoading] = useState<boolean>(false);
   let subtotal = 0;
   let addonsTotal = 0;
 
   const showToast = useToastStore((state) => state.showToast);
 
-  const handleRemoveFromCart = (product_id: string) => {
+  const handleRemoveFromCart = async (cartItemId: string) => {
     // removeFromCart(product_id);
-    showToast("Removed from cart!", "success");
+    setIsCartLoading(true);
+    const response: any = await removeCartItem(cartItemId!);
+    refreshCart();
+    setIsCartLoading(false);
+    showToast(
+      response ? "Removed from cart!" : "Something went wron!",
+      response ? "success" : "error"
+    );
   };
 
   const fetchCart = async () => {
@@ -112,7 +125,7 @@ export default function Cart() {
                           <VscClose
                             className="cursor-pointer"
                             onClick={() =>
-                              handleRemoveFromCart(product.product_id)
+                              handleRemoveFromCart(item.cart_item_id!)
                             }
                           />
                         </div>

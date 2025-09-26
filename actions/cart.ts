@@ -146,66 +146,20 @@ export const addItemToCart = async (
   }
 };
 
-export const addOrUpdateCartItem = async (
-  userId: string,
-  item: AddToCartType,
-  cartId: string,
-  cartItemId?: string
-) => {
+export const removeCartItem = async (cartItemId: string) => {
   try {
-    let finalCartId = cartId;
     const supabase = await createClient();
+    const { data, error: removeItemError } = await supabase
+      .from("cart_item")
+      .delete()
+      .eq("cart_item_id", cartItemId)
+      .single();
+    console.log({ data, cartItemId });
 
-    if (!finalCartId) {
-      const { data: newCart, error: insertCartError } = await supabase
-        .from("cart")
-        .insert({ user_id: userId, total_count: 0 })
-        .select("id")
-        .single();
-
-      if (insertCartError) throw insertCartError;
-      finalCartId = newCart?.id;
-    }
-
-    if (!finalCartId) throw new Error("Failed to create or get cart");
-
-    // 2️⃣ Add or increment cart item
-    if (cartItemId) {
-      // Increment quantity for existing cart item
-      const { error: updateError } = await supabase
-        .from("cart_item")
-        .select("*")
-        // .update({ quantity: supabase.raw("quantity + ?", [item.quantity]) })
-        .eq("id", cartItemId);
-
-      if (updateError) throw updateError;
-    } else {
-      // Insert new cart item
-      const { error: insertItemError } = await supabase
-        .from("cart_item")
-        .insert({
-          cart_id: finalCartId,
-          product_id: item.product_id,
-          quantity: item.quantity,
-          addons: item.addons, // array or JSON
-        });
-
-      if (insertItemError) throw insertItemError;
-    }
-
-    // 3️⃣ Update cart total_count using Postgres function
-    const { error: updateCartError } = await supabase.rpc(
-      "update_cart_total_count",
-      {
-        cart_id: finalCartId,
-      }
-    );
-
-    if (updateCartError) throw updateCartError;
-
-    return finalCartId;
+    if (removeItemError) throw removeItemError;
+    return true;
   } catch (error) {
-    console.error("Add/update cart item error:", error);
+    console.error("Delete cart item error:", error);
     return null;
   }
 };

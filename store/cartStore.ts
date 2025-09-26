@@ -15,11 +15,12 @@ interface CartState {
   initialized: boolean; // to track if cart was loaded
   setShowCart: (value: boolean) => void;
   addToCart: (item: AddToCartType) => void;
+  removeFromCart: (item: AddToCartType) => void;
   clearCart: () => void;
   setCart: (cart: CartItemType[]) => void;
   setShowModal: (value: boolean) => void;
   setCartCount: (cart: CartIdAndCountType) => void;
-  increaseCartCount: () => void;
+  refreshCart: () => void;
   decreaseCartCount: () => void;
 }
 
@@ -29,19 +30,24 @@ export const useCartStore = create<CartState>((set, get) => ({
   initialized: false,
   cartCount: 0,
   cartId: null,
-  isModalOpen: true,
+  isModalOpen: false,
   setCartCount: (cart) =>
     set({ cartCount: cart.cartCount, cartId: cart.cartId }),
 
-  setShowCart: (value) => set({ shouldShowCart: value }),
-
-  setShowModal: (value) => set({ isModalOpen: value }),
+  setShowCart: (value) => {
+    set({ shouldShowCart: value, isModalOpen: false });
+  },
+  setShowModal: (value) => {
+    set({ isModalOpen: value, shouldShowCart: false });
+  },
 
   setCart: (cart) => set({ cart }),
 
   addToCart: (item) => {},
 
-  increaseCartCount: async () => {
+  removeFromCart: (item) => {},
+
+  refreshCart: async () => {
     const state = get();
     const newCart: any = await fetchCartItems(state.cartId!);
     if (newCart) {

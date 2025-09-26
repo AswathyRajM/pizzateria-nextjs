@@ -1,6 +1,5 @@
 import { productAddonFormat } from "@/utils/product";
 import { createClient } from "@/utils/supabase/server";
-import { ProductType } from "@/utils/types";
 
 export const fetchProductDetails = async (productId: string) => {
   try {

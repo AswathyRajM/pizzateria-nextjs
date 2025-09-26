@@ -19,8 +19,9 @@ export default function PDP({
   product: ProductType;
   addonIds: string[];
 }) {
-  const { cartId, cart, increaseCartCount, setShowCart, setCartCount } =
-    useCartStore((state) => state);
+  const { cartId, cart, refreshCart, setShowCart, setCartCount } = useCartStore(
+    (state) => state
+  );
   const { user } = useUserState((state) => state);
   const showToast = useToastStore((state) => state.showToast);
 
@@ -71,19 +72,19 @@ export default function PDP({
       addons: chosenAddons,
     };
     await addItemToCart(item, currentCartId!, cart);
-    increaseCartCount();
+    refreshCart();
     setShowCart(true);
     showToast("Added to cart!", "success");
   };
   return (
     <AnimatePresence>
-      <main className="max-w-6xl px-6 py-12 mx-auto grid md:grid-cols-2 gap-12">
+      <main className="max-w- md:max-w-6xl py-0 px-6 md:py-12 mx-auto grid md:grid-cols-2 gap-6 md:gap-12">
         {/* Left: Image */}
         <motion.aside
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1, duration: 0.5 }}
-          className="relative  size-96 md:size-[500px]  rounded-2xl overflow-hidden shadow-lg"
+          className="relative size-[86vw] md:size-[500px] md:max-h-[45vw] md:max-w-[45vw] overflow-hidden shadow-lg"
         >
           <Image
             src={product.image_url}
@@ -100,7 +101,7 @@ export default function PDP({
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2, duration: 0.5 }}
         >
-          <div className="flex flex-col justify-between">
+          <div className="flex flex-col justify-between max-w-[90vw]">
             <div>
               <h1 className="text-3xl md:text-4xl font-bold text-white/90 mb-4">
                 {product.name}
@@ -176,9 +177,6 @@ export default function PDP({
                 onClick={handleAddToCart}
               >
                 Add to Cart
-              </Button>
-              <Button inverted className="flex-1 px-6 py-3 font-bold">
-                Buy Now
               </Button>
             </div>
           </div>
