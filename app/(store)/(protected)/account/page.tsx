@@ -1,7 +1,11 @@
-import React from "react";
+import { fetchUserProfile } from "@/actions/profile";
+import ProfileForm from "@/components/profile/profile-form";
 
-async function Account() {
-  return <div>Account</div>;
+export default async function AccountPage() {
+  const profile = await fetchUserProfile();
+  return (
+    <div>
+      <ProfileForm profile={profile} />
+    </div>
+  );
 }
-
-export default Account;

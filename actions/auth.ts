@@ -43,7 +43,6 @@ export async function getUserSession() {
   }
 }
 
-
 export const handleLogin = async ({
   email,
   password,
@@ -70,13 +69,15 @@ export const handleLogin = async ({
 export const handleSignup = async ({
   email,
   password,
+  name,
 }: {
   email: string;
   password: string;
+  name: string;
 }) => {
   const supabase = createClient();
   try {
-    const { error } = await supabase.auth.signUp({
+    const { data: authData, error } = await supabase.auth.signUp({
       email,
       password,
       options: {
@@ -84,7 +85,35 @@ export const handleSignup = async ({
       },
     });
     if (error) throw error;
-  
+
+    const userId = authData.user?.id;
+    if (!userId) throw new Error("User ID not found after signup");
+
+    const { error: profileError } = await supabase.from("profiles").upsert([
+      {
+        id: userId,
+        name,
+      },
+    ]);
+
+    if (profileError) throw profileError;
+
+    return { success: true };
+  } catch (error: unknown) {
+    console.log({ error });
+
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : "An error occurred",
+    };
+  }
+};
+
+export const userLogout = async () => {
+  const supabase = createClient();
+  try {
+    const { error } = await supabase.auth.signOut();
+    if (error) throw error;
     return { success: true };
   } catch (error: unknown) {
     return {

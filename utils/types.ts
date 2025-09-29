@@ -42,3 +42,10 @@ export interface CartIdAndCountType {
   cartId: string | null;
   cartCount: number;
 }
+
+export interface ProfileFormProps {
+  id: string;
+  name: string;
+  address: string | null;
+  avatar_img_url: string | null;
+}

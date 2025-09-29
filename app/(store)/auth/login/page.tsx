@@ -6,6 +6,7 @@ import Button from "@/components/shared/button";
 import { handleLogin } from "@/actions/auth";
 import { useToastStore } from "@/store/toastStore";
 import Link from "next/link";
+import Input from "@/components/shared/input";
 
 export default function LoginForm() {
   const [email, setEmail] = useState("");
@@ -22,7 +23,10 @@ export default function LoginForm() {
         email,
         password,
       });
-      if (error) throw error;
+      if (error) {
+        showToast(error, "error");
+        return;
+      }
       showToast("You are logged in!", "success");
       router.push("/account");
     } catch (error: unknown) {
@@ -39,21 +43,21 @@ export default function LoginForm() {
     <div className="bg-neutral-900 p-6 flex flex-col justify-center items-center ">
       <h1 className="text-2xl font-bold mb-4">Login</h1>
       <form onSubmit={submitLogin} className="flex flex-col gap-3 w-80">
-        <input
+        <Input
+          name="email"
           type="email"
-          placeholder="Email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
+          placeholder="Email"
           required
-          className="p-2 border"
         />
-        <input
+        <Input
+          name="password"
           type="password"
-          placeholder="Password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
+          placeholder="Password"
           required
-          className="p-2 border"
         />
         <Button loading={isLoading} className="!p-3 mt-4" type="submit">
           Login
