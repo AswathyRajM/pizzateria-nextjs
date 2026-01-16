@@ -1,4 +1,3 @@
-import { createClient } from "@/utils/supabase/server";
 import Deals from "../components/deals";
 import Featured from "../components/featured";
 import HeroBanner from "../components/hero-banner";
@@ -18,3 +17,6 @@ export default async function Home() {
     </div>
   );
 }
+
+export const dynamic = "force-dynamic";
+
