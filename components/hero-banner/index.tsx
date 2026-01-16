@@ -73,7 +73,7 @@ export default function HeroCarousel() {
               alt={banner.title}
               fill
               className="object-cover"
-              priority={index === 1} // first real slide
+              priority={index === 0 || index === 1} // first real slide
             />
             <div className="absolute inset-0 bg-gradient-to-r from-black/70 to-black/10" />
             <AnimatePresence>
