@@ -32,4 +32,3 @@ export const SIDEBAR_NAVLINKS = [
   { label: "Orders", href: "/account/orders" },
 ];
 
-export const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL;
