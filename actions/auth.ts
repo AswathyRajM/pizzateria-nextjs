@@ -10,32 +10,35 @@ export async function getUserSession() {
     }: any = await supabase.auth.getSession();
 
     if (error) console.error("Session error:", error);
+console.log({ session });
 
-    if (session) {
-      // Check if expired
-      if (Date.now() / 1000 > session.expires_at) {
-        // Refresh session
-        const { data: refreshedData, error: refreshError } =
-          await supabase.auth.refreshSession();
-        if (refreshError) {
-          console.error("Refresh error:", refreshError);
-          return null;
-        }
-        return {
-          user: refreshedData.user,
-          session: refreshedData.session,
-          cart: {},
-        };
-      }
-      return { user: session.user, session, cart: {} };
-    }
-
-    // No session, create anonymous session
-    const { data, error: anonError } = await supabase.auth.signInAnonymously();
-    if (anonError) {
-      console.error("Anonymous auth error:", anonError);
+if (session) {
+  // Check if expired
+  if (Date.now() / 1000 > session.expires_at) {
+    // Refresh session
+    const { data: refreshedData, error: refreshError } =
+      await supabase.auth.refreshSession();
+    if (refreshError) {
+      console.error("Refresh error:", refreshError);
       return null;
     }
+    return {
+      user: refreshedData.user,
+      session: refreshedData.session,
+      cart: {},
+    };
+  }
+  return { user: session.user, session, cart: {} };
+}
+
+// No session, create anonymous session
+const { data, error: anonError } = await supabase.auth.signInAnonymously();
+if (anonError) {
+  console.error("Anonymous auth error:", anonError);
+  return null;
+}
+console.log({ data });
+
     return { user: data.user, session: data.session, cart: null };
   } catch (err) {
     console.error("Unexpected auth error:", err);

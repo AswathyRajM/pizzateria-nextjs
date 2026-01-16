@@ -11,6 +11,7 @@ import { AddonType, ProductType } from "@/utils/types";
 import { useCartStore } from "@/store/cartStore";
 import { addItemToCart, createCart } from "@/actions/cart";
 import { useUserState } from "@/store/userStore";
+import SafeImage from "../products-listing/productImage";
 
 export default function PDP({
   product,
@@ -20,7 +21,7 @@ export default function PDP({
   addonIds: string[];
 }) {
   const { cartId, cart, refreshCart, setShowCart, setCartCount } = useCartStore(
-    (state) => state
+    (state) => state,
   );
   const { user } = useUserState((state) => state);
   const showToast = useToastStore((state) => state.showToast);
@@ -36,7 +37,7 @@ export default function PDP({
     setSelectedAddons((prev) =>
       prev.includes(addon_id)
         ? prev.filter((a) => a !== addon_id)
-        : [...prev, addon_id]
+        : [...prev, addon_id],
     );
   };
 
@@ -64,7 +65,7 @@ export default function PDP({
     }
 
     const chosenAddons = product.addons?.filter((addon) =>
-      selectedAddons.includes(addon.addon_id)
+      selectedAddons.includes(addon.addon_id),
     );
     const item = {
       product_id: product.product_id,
@@ -86,11 +87,10 @@ export default function PDP({
           transition={{ delay: 0.1, duration: 0.5 }}
           className="relative size-[86vw] md:size-[500px] md:max-h-[45vw] md:max-w-[45vw] overflow-hidden shadow-lg"
         >
-          <Image
+          <SafeImage
             src={product.image_url}
             alt={product.name}
-            fill
-            className="object-cover"
+            className="object-contain object-center"
           />
         </motion.aside>
 

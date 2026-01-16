@@ -13,6 +13,7 @@ import QuantityButton from "../shared/quantity-button";
 import { addItemToCart, createCart } from "@/actions/cart";
 import { useUserState } from "@/store/userStore";
 import { useToastStore } from "@/store/toastStore";
+import SafeImage from "./productImage";
 
 interface ProductsProps {
   heading: string;
@@ -21,7 +22,7 @@ interface ProductsProps {
 
 export const ProductsListing = ({ heading, products }: ProductsProps) => {
   const [selectedProduct, setSelectedProduct] = useState<ProductType | null>(
-    null
+    null,
   );
   const [quantity, setQuantity] = useState(1);
   const [selectedAddons, setSelectedAddons] = useState<string[]>([]);
@@ -42,7 +43,7 @@ export const ProductsListing = ({ heading, products }: ProductsProps) => {
     setSelectedAddons((prev) =>
       prev.includes(addon_id)
         ? prev.filter((a) => a !== addon_id)
-        : [...prev, addon_id]
+        : [...prev, addon_id],
     );
   };
 
@@ -88,7 +89,7 @@ export const ProductsListing = ({ heading, products }: ProductsProps) => {
     }
 
     const chosenAddons = selectedProduct?.addons?.filter((addon) =>
-      selectedAddons.includes(addon.addon_id)
+      selectedAddons.includes(addon.addon_id),
     );
     const item = {
       product_id: selectedProduct?.product_id,
@@ -129,10 +130,9 @@ export const ProductsListing = ({ heading, products }: ProductsProps) => {
                 </div>
                 {/* Product Image */}
                 <div className="relative h-[240px] flex-shrink-0">
-                  <Image
+                  <SafeImage
                     src={product.image_url}
                     alt={product.name}
-                    fill
                     className="object-contain object-center"
                   />
                 </div>

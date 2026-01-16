@@ -50,13 +50,13 @@ export const fetchCartItems = async (cartId: string) => {
     const supabase = await createClient();
     const { data: cart, error: insertCartError } = await supabase
       .from("cart_item")
-      .select("*, product:products(*) ")
+      .select("*, product:products(*)", { count: "exact" })
       .eq("cart_id", cartId);
 
     if (insertCartError) throw insertCartError;
     return cart;
   } catch (error) {
-    console.error("Create cartid error", error);
+    console.error("fetchCartItems error", error);
     return null;
   }
 };
